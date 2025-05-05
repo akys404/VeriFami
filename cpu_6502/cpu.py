@@ -81,7 +81,7 @@ class mod_cpu:
             d_alu_internal = (self.r_ain >> 1) | (self.r_ain << 7)
 
         d_alu = d_alu_internal & 0xFF
-        f_cout = d_alu_internal >> 8
+        f_cout = d_alu_internal >> 8 & 0x01
         if ctrl.sel_alu == 0:
             f_vout = ((~self.r_ain & ~self.r_bin & d_alu) | (self.r_ain & self.r_bin & ~d_alu)) >> 7
         elif ctrl.sel_alu == 1:
@@ -119,12 +119,12 @@ class mod_cpu:
         elif ctrl.sel_sub == 1:
             d_sub = d_data
         elif ctrl.sel_sub == 2:
-            d_sub = d_pc_inc & 0x00_FF
+            d_sub = d_pc_inc & 0xFF
         elif ctrl.sel_sub == 3:
             d_sub = self.r_sp
 
         # P state
-        f_neg = d_main >> 7
+        f_neg = d_main >> 7 & 0x01
         f_zero = d_main == 0
         if ctrl.sel_p == 0:
             d_p = 0x00
@@ -265,7 +265,7 @@ class mod_cpu:
             elif ctrl.sel_abh == 0x6:
                 self.r_abh = self.r_pch
             elif ctrl.sel_abh == 0x7:
-                self.r_abh = d_pc_inc >> 8
+                self.r_abh = d_pc_inc >> 8 & 0xFF
                 
         if not rst_n:
             self.r_abl = 0
@@ -289,7 +289,7 @@ class mod_cpu:
             elif ctrl.sel_abl == 0x9:
                 self.r_abl = self.r_pcl
             elif ctrl.sel_abl == 0xA:
-                self.r_abl = d_pc_inc & 0x00_FF
+                self.r_abl = d_pc_inc & 0xFF
             elif ctrl.sel_abl == 0xB:
                 self.r_abl = self.r_sp
 
@@ -297,7 +297,7 @@ class mod_cpu:
             self.r_pch = 0
         elif f_rdy:
             if ctrl.sel_pch == 1:
-                self.r_pch = d_pc_inc >> 8
+                self.r_pch = d_pc_inc >> 8 & 0xFF
             elif ctrl.sel_pch == 2:
                 self.r_pch = d_data
 
@@ -305,7 +305,7 @@ class mod_cpu:
             self.r_pcl = 0
         elif f_rdy:
             if ctrl.sel_pcl == 1:
-                self.r_pcl = d_pc_inc & 0x00_FF
+                self.r_pcl = d_pc_inc & 0xFF
             elif ctrl.sel_pcl == 2:
                 self.r_pcl = d_alu
             elif ctrl.sel_pcl == 3:
