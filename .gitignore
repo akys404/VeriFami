@@ -1,0 +1,10 @@
+# 機密情報ファイル
+.env*
+.vscode/
+
+# python 関連
+.venv/
+__pycache__
+
+# テストファイル
+tests/
