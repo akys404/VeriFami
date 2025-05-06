@@ -60,25 +60,24 @@ class mod_cpu:
         elif ctrl.sel_cin == 3:
             f_cin = self.r_cout_old
 
-        if ctrl.sel_alu == 0:
+        if ctrl.sel_alu == 0:   # ADD
             d_alu_internal = self.r_ain + self.r_bin + f_cin
-        elif ctrl.sel_alu == 1:
+        elif ctrl.sel_alu == 1: # SUB
             d_alu_internal = self.r_ain + (~self.r_bin & 0xFF) + f_cin
-        elif ctrl.sel_alu == 2:
+        elif ctrl.sel_alu == 2: # AND
             d_alu_internal = self.r_ain & self.r_bin
-        elif ctrl.sel_alu == 3:
+        elif ctrl.sel_alu == 3: # OR
             d_alu_internal = self.r_ain | self.r_bin
-        elif ctrl.sel_alu == 4:
+        elif ctrl.sel_alu == 4: # XOR
             d_alu_internal = self.r_ain ^ self.r_bin
-        elif ctrl.sel_alu == 5:
+        elif ctrl.sel_alu == 5: # SLL
             d_alu_internal = self.r_ain << 1
-        elif ctrl.sel_alu == 6:
+        elif ctrl.sel_alu == 6: # SRL
             d_alu_internal = self.r_ain >> 1
-        # The current implementation of rotation is incorrect — needs to be fixed
-        elif ctrl.sel_alu == 7:
-            d_alu_internal = (self.r_ain << 1) | (self.r_ain >> 7)
-        elif ctrl.sel_alu == 8:
-            d_alu_internal = (self.r_ain >> 1) | (self.r_ain << 7)
+        elif ctrl.sel_alu == 7: # ROL
+            d_alu_internal = (self.r_ain << 1) | (f_cin)
+        elif ctrl.sel_alu == 8: # ROR
+            d_alu_internal = ((self.r_ain << 9) | (f_cin << 8) | (self.r_ain)) >> 1
 
         d_alu = d_alu_internal & 0xFF
         f_cout = d_alu_internal >> 8 & 0x01
