@@ -35,7 +35,7 @@ class mod_cpu:
     def step(self, rst_n, i_nmi, i_irq, i_rdy, d_data):
     # Evaluate
         # Decoder
-        ctrl = decoder(self.r_res, self.r_nmi, self.r_irq, self.r_ir, self.r_stage)
+        ctrl = decoder(self.r_res, self.r_nmi, self.r_irq, self.r_ir, self.r_stage, self.r_p, self.r_ain)
 
         # input signals
         f_rdy = i_rdy & ctrl.o_rw
@@ -56,7 +56,7 @@ class mod_cpu:
         elif ctrl.sel_cin == 1:
             f_cin = 1
         elif ctrl.sel_cin == 2:
-            f_cin = self.r_p | 0b0000_0001
+            f_cin = self.r_p & 0b0000_0001
         elif ctrl.sel_cin == 3:
             f_cin = self.r_cout_old
 

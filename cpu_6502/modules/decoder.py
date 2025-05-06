@@ -1,6 +1,6 @@
 from cpu_6502.modules.utils import stage_e, ctrl_t
 
-def decoder(r_res, r_nmi, r_irq, r_ir, r_stage):
+def decoder(r_res, r_nmi, r_irq, r_ir, r_stage, r_p, r_ain):
     set_ctrl = {}
     # ---------- Exception ----------
     #01 RESET
