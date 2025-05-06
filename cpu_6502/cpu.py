@@ -2,7 +2,7 @@ from cpu_6502.modules.utils import stage_e
 from cpu_6502.modules.decoder import decoder
 
 class mod_cpu:
-    def __init__(self):
+    def __init__(self, debug=False):
         # Control Region
         self.r_ir = 0
         self.r_stage = stage_e.T1
@@ -26,6 +26,7 @@ class mod_cpu:
         self.r_pcl = 0
         self.r_dor = 0
         # for debug
+        self.p_debug = debug
         self.r_rw = 1
         self.r_main = 0
         self.r_sub = 0
@@ -45,10 +46,11 @@ class mod_cpu:
         o_sync = self.r_stage == stage_e.T1
         o_rw = ctrl.o_rw
 
-        if not f_rdy:
-            print('── HALT ──')
-        elif o_sync:
-            print('── SYNC ──')
+        if self.p_debug:
+            if not f_rdy:
+                print('── HALT ──')
+            elif o_sync:
+                print('── SYNC ──')
 
         # ALU
         if ctrl.sel_cin == 0:
@@ -316,7 +318,8 @@ class mod_cpu:
         self.r_sub = d_sub
         self.r_alu = d_alu
         self.r_alu_op = ctrl.sel_alu
-        print(self)
+        if self.p_debug:
+            print(self)
 
     def __repr__(self):
         hidden_keys = {'r_nmi_old', 'r_nmi_latch', 'r_cout_old'}

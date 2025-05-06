@@ -5,6 +5,3 @@
 # python 関連
 .venv/
 __pycache__
-
-# テストファイル
-tests/
