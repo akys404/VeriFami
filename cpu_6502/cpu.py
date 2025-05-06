@@ -35,7 +35,7 @@ class mod_cpu:
     def step(self, rst_n, i_nmi, i_irq, i_rdy, d_data):
     # Evaluate
         # Decoder
-        ctrl = decoder(self.r_ir, self.r_stage)
+        ctrl = decoder(self.r_res, self.r_nmi, self.r_irq, self.r_ir, self.r_stage)
 
         # input signals
         f_rdy = i_rdy & ctrl.o_rw
@@ -156,20 +156,20 @@ class mod_cpu:
         # RES detector
         if not rst_n:
             self.r_res = 1
-        elif f_rdy and d_nextstage == stage_e.T1:
+        elif f_rdy and self.r_stage == stage_e.T1:
             self.r_res = 0
 
         # NMI detector
         if not rst_n:
             self.r_nmi = 0
-        elif f_rdy and d_nextstage == stage_e.T1:
+        elif f_rdy and self.r_stage == stage_e.T1:
             self.r_nmi = self.r_nmi_latch
 
         if not rst_n:
             self.r_nmi_latch = 0
         elif not self.r_nmi_old and i_nmi:
             self.r_nmi_latch = 1
-        elif f_rdy and d_nextstage == stage_e.T1:
+        elif f_rdy and self.r_stage == stage_e.T1:
             self.r_nmi_latch = 0
 
         if not rst_n:
@@ -180,7 +180,7 @@ class mod_cpu:
         # IRQ detector
         if not rst_n:
             self.r_irq = 0
-        elif f_rdy and d_nextstage == stage_e.T1:
+        elif f_rdy and self.r_stage == stage_e.T1:
             if not (self.r_p & 0b0000_0100):
                 self.r_irq = not i_irq
             else:
