@@ -7,6 +7,7 @@ class mod_cpu:
         self.r_ir = 0
         self.r_stage = stage_e.T1
         self.r_res = 0
+        self.r_rst_old = 1
         self.r_nmi = 0
         self.r_nmi_old = 1
         self.r_nmi_latch = 0
@@ -159,9 +160,16 @@ class mod_cpu:
     # Control register
         # RES detector
         if not rst_n:
+            self.r_res = 0
+        elif not self.r_rst_old and rst_n:
             self.r_res = 1
         elif f_rdy and self.r_stage == stage_e.T1:
             self.r_res = 0
+
+        if not rst_n:
+            self.r_rst_old = 0
+        else:
+            self.r_rst_old = rst_n
 
         # NMI detector
         if not rst_n:
@@ -325,7 +333,7 @@ class mod_cpu:
         return {'o_rw':o_rw, 'o_address':o_address, 'o_data':o_data}
 
     def __repr__(self):
-        hidden_keys = {'r_nmi_old', 'r_nmi_latch', 'r_cout_old', 'p_debug'}
+        hidden_keys = {'r_rst_old', 'r_nmi_old', 'r_nmi_latch', 'r_cout_old', 'p_debug'}
         return " ".join(
             f"{k[2:].upper()}:{v.name if isinstance(v, stage_e) else f'{v:02X}'}"
             for k, v in self.__dict__.items()
