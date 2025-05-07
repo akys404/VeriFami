@@ -33,7 +33,7 @@ class mod_cpu:
         self.r_alu = 0
         self.r_alu_op = 0
 
-    def step(self, rst_n, i_nmi, i_irq, i_rdy, d_data):
+    def step(self, d_data, rst_n=1, i_nmi=1, i_irq=1, i_rdy=1):
     # Evaluate
         # Decoder
         ctrl = decoder(self)

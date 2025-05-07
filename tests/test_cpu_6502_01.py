@@ -4,11 +4,16 @@ from cpu_6502.cpu import mod_cpu
 #01 RESET
 def test_res():
     u_cpu = mod_cpu(debug=True)
-    u_cpu.r_x = 0xFE
-    u_cpu.step(1,1,1,1,0xC8)
-    u_cpu.step(1,1,1,1,0xC8)
-    u_cpu.step(1,1,1,1,0xC8)
-    assert u_cpu.r_x == 0xFE
+    u_cpu.step(0x00, rst_n=0)
+    u_cpu.step(0x00, rst_n=0)
+    u_cpu.step(0x00, rst_n=1)
+    u_cpu.step(0x00, rst_n=1)
+    output = u_cpu.step(0x0A, rst_n=1)
+    assert output['o_address'] == 0xFFFC
+    output = u_cpu.step(0x0B, rst_n=1)
+    assert output['o_address'] == 0xFFFD
+    output = u_cpu.step(0x00, rst_n=1)
+    assert output['o_address'] == 0x0B0A
 
 #02 NMI
 def test_nmi():
