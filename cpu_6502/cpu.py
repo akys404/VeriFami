@@ -27,7 +27,6 @@ class mod_cpu:
         self.r_dor = 0
         # for debug
         self.p_debug = debug
-        self.r_rw = 1
         self.r_main = 0
         self.r_sub = 0
         self.r_alu = 0
@@ -42,12 +41,15 @@ class mod_cpu:
         f_rdy = i_rdy & ctrl.o_rw
 
         # output signals
-        o_address = self.r_abh << 8 | self.r_abl
-        o_sync = self.r_stage == stage_e.T1
         o_rw = ctrl.o_rw
-
+        o_address = self.r_abh << 8 | self.r_abl
+        o_data = 0xFF if ctrl.o_rw else self.r_dor
+        o_sync = self.r_stage == stage_e.T1
+        
         if self.p_debug:
-            if not f_rdy:
+            if not o_rw:
+                print(f'── WRITE ── address: 0x{o_address:04X}  data: 0x{o_data:02X}')
+            elif not f_rdy:
                 print('── HALT ──')
             elif o_sync:
                 print('── SYNC ──')
@@ -313,7 +315,6 @@ class mod_cpu:
                 self.r_pcl = self.r_sp
 
         # for debug
-        self.r_rw = o_rw
         self.r_main = d_main
         self.r_sub = d_sub
         self.r_alu = d_alu
@@ -321,8 +322,10 @@ class mod_cpu:
         if self.p_debug:
             print(self)
 
+        return {'o_rw':o_rw, 'o_address':o_address, 'o_data':o_data}
+
     def __repr__(self):
-        hidden_keys = {'r_nmi_old', 'r_nmi_latch', 'r_cout_old'}
+        hidden_keys = {'r_nmi_old', 'r_nmi_latch', 'r_cout_old', 'p_debug'}
         return " ".join(
             f"{k[2:].upper()}:{v.name if isinstance(v, stage_e) else f'{v:02X}'}"
             for k, v in self.__dict__.items()
