@@ -3,7 +3,7 @@ from cpu_6502.cpu import mod_cpu
 # ---------- Exception ----------
 #01 RESET
 def test_res():
-    u_cpu = mod_cpu(debug=True)
+    u_cpu = mod_cpu(debug=False)
     u_cpu.step(0x00, rst_n=0)
     u_cpu.step(0x00, rst_n=0)
     u_cpu.step(0x00, rst_n=1)
