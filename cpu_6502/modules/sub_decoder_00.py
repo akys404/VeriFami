@@ -1,27 +1,30 @@
 from cpu_6502.modules.utils import stage_e, ctrl_t
 
-def sub_decoder_01(r_ir, r_stage):
+def sub_decoder_00(r_ir, r_stage):
     ctrl_signals = None
 
-    # ---------- 0x40 ~ 0x4F ----------
-    # RTI-IMPLIED
-    if r_ir == 0x40:
+    # ---------- 0x00 ~ 0x0F ----------
+    # BRK-IMPLIED
+    if r_ir == 0x00:
         if r_stage == stage_e.T1:
             ctrl_signals = ctrl_t(o_rw=1, en_ir=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T2:
-            ctrl_signals = ctrl_t(o_rw=1, sel_sub=3, sel_ain=0, sel_bin=2, sel_abh=6, sel_abl=5)
+            ctrl_signals = ctrl_t(o_rw=1, sel_main=6, sel_sub=3, sel_ain=1, sel_bin=2, sel_abh=6, sel_abl=5)
         elif r_stage == stage_e.T3:
-            ctrl_signals = ctrl_t(o_rw=1, sel_sub=0, sel_ain=0, sel_bin=2, sel_cin=1, sel_alu=0, sel_abh=6, sel_abl=2)
+            ctrl_signals = ctrl_t(o_rw=0, sel_main=7, sel_sub=0, sel_ain=1, sel_bin=2, sel_cin=0, sel_alu=0, sel_abh=6, sel_abl=2)
         elif r_stage == stage_e.T4:
-            ctrl_signals = ctrl_t(o_rw=1, en_p=0xFF, sel_p=3, sel_sub=0, sel_ain=0, sel_bin=2, sel_cin=1, sel_alu=0, sel_abh=6, sel_abl=2)
+            ctrl_signals = ctrl_t(o_rw=0, sel_b=1, sel_main=8, sel_sub=0, sel_ain=1, sel_bin=2, sel_cin=0, sel_alu=0, sel_abh=6, sel_abl=2)
         elif r_stage == stage_e.T5:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=1, sel_main=0, sel_sub=1, en_sp=1, sel_ain=0, sel_bin=2, sel_cin=1, sel_alu=0, sel_abh=6, sel_abl=2)
+            ctrl_signals = ctrl_t(o_rw=0, sel_main=0, en_sp=1, sel_cin=0, sel_alu=0, sel_abh=7, sel_abl=0xA)
+        elif r_stage == stage_e.T6:
+            ctrl_signals = ctrl_t(o_rw=1, sel_st=1, sel_sub=1, sel_ain=0, sel_bin=2, sel_abh=7, sel_abl=0xB)
         elif r_stage == stage_e.T0:
             ctrl_signals = ctrl_t(o_rw=1, sel_st=2, sel_cin=0, sel_alu=0, sel_abh=3, sel_abl=2, sel_pch=3, sel_pcl=2)
 
-    # EOR-(IND,X)    elif r_ir == 0x41:
+    # ORA-(IND,X)
+    elif r_ir == 0x01:
         if r_stage == stage_e.T1:
-            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, en_p=0x82, sel_p=2, sel_main=0, en_a=1, sel_cin=0, sel_alu=4, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, en_p=0x82, sel_p=2, sel_main=0, en_a=1, sel_cin=0, sel_alu=3, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T2:
             ctrl_signals = ctrl_t(o_rw=1, sel_main=2, sel_sub=1, sel_ain=2, sel_bin=2, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T3:
@@ -34,28 +37,28 @@ def sub_decoder_01(r_ir, r_stage):
             ctrl_signals = ctrl_t(o_rw=1, sel_st=2, sel_main=4, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=4, sel_abl=4)
 
     # illegal opcodes
-    elif r_ir == 0x42:
+    elif r_ir == 0x02:
         pass
 
     # illegal opcodes
-    elif r_ir == 0x43:
+    elif r_ir == 0x03:
         pass
 
     # illegal opcodes
-    elif r_ir == 0x44:
+    elif r_ir == 0x04:
         pass
 
-    # EOR-ZEROPAGE
-    elif r_ir == 0x45:
+    # ORA-ZEROPAGE
+    elif r_ir == 0x05:
         if r_stage == stage_e.T1:
-            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, en_p=0x82, sel_p=2, sel_main=0, en_a=1, sel_cin=0, sel_alu=4, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, en_p=0x82, sel_p=2, sel_main=0, en_a=1, sel_cin=0, sel_alu=3, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T2:
             ctrl_signals = ctrl_t(o_rw=1, sel_st=1, sel_abh=5, sel_abl=3, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T0:
             ctrl_signals = ctrl_t(o_rw=1, sel_st=2, sel_main=4, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=4, sel_abl=4)
 
-    # LSR-ZEROPAGE
-    elif r_ir == 0x46:
+    # ASL-ZEROPAGE
+    elif r_ir == 0x06:
         if r_stage == stage_e.T1:
             ctrl_signals = ctrl_t(o_rw=1, en_ir=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T2:
@@ -63,54 +66,49 @@ def sub_decoder_01(r_ir, r_stage):
         elif r_stage == stage_e.T3:
             ctrl_signals = ctrl_t(o_rw=1, sel_main=1, sel_ain=2, sel_bin=0)
         elif r_stage == stage_e.T4:
-            ctrl_signals = ctrl_t(o_rw=0, sel_st=1, en_p=0x83, sel_p=2, sel_main=0, sel_cin=0, sel_alu=6)
+            ctrl_signals = ctrl_t(o_rw=0, sel_st=1, en_p=0x83, sel_p=2, sel_main=0, sel_cin=0, sel_alu=5)
         elif r_stage == stage_e.T0:
             ctrl_signals = ctrl_t(o_rw=0, sel_st=2, sel_abh=4, sel_abl=4)
 
     # illegal opcodes
-    elif r_ir == 0x47:
+    elif r_ir == 0x07:
         pass
 
-    # PHA-IMPLIED
-    elif r_ir == 0x48:
+    # PHP-IMPLIED
+    elif r_ir == 0x08:
         if r_stage == stage_e.T1:
             ctrl_signals = ctrl_t(o_rw=1, en_ir=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T2:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=1, sel_main=4, sel_sub=3, sel_ain=1, sel_bin=2, sel_abh=6, sel_abl=5)
+            ctrl_signals = ctrl_t(o_rw=1, sel_st=1, sel_b=1, sel_main=8, sel_sub=3, sel_ain=1, sel_bin=2, sel_abh=6, sel_abl=5)
         elif r_stage == stage_e.T0:
             ctrl_signals = ctrl_t(o_rw=0, sel_st=2, sel_main=0, en_sp=1, sel_cin=0, sel_alu=0, sel_abh=4, sel_abl=4)
 
-    # EOR-IMMEDIATE
-    elif r_ir == 0x49:
+    # ORA-IMMEDIATE
+    elif r_ir == 0x09:
         if r_stage == stage_e.T1:
-            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, en_p=0x82, sel_p=2, sel_main=0, en_a=1, sel_cin=0, sel_alu=4, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, en_p=0x82, sel_p=2, sel_main=0, en_a=1, sel_cin=0, sel_alu=3, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T2:
             ctrl_signals = ctrl_t(o_rw=1, sel_st=2, sel_main=4, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
 
-    # LSR-ACCUM
-    elif r_ir == 0x4A:
+    # ASL-ACCUM
+    elif r_ir == 0x0A:
         if r_stage == stage_e.T1:
-            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, en_p=0x83, sel_p=2, sel_main=0, en_a=1, sel_cin=0, sel_alu=6, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, en_p=0x83, sel_p=2, sel_main=0, en_a=1, sel_cin=0, sel_alu=5, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T2:
             ctrl_signals = ctrl_t(o_rw=1, sel_st=2, sel_main=4, sel_ain=2, sel_bin=0, sel_abh=4, sel_abl=4)
 
     # illegal opcodes
-    elif r_ir == 0x4B:
+    elif r_ir == 0x0B:
         pass
 
-    # JMP-ABSOLUTE
-    elif r_ir == 0x4C:
-        if r_stage == stage_e.T1:
-            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
-        elif r_stage == stage_e.T2:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=1, sel_sub=1, sel_ain=0, sel_bin=2, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
-        elif r_stage == stage_e.T0:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=2, sel_cin=0, sel_alu=0, sel_abh=3, sel_abl=2, sel_pch=3, sel_pcl=2)
+    # illegal opcodes
+    elif r_ir == 0x0C:
+        pass
 
-    # EOR-ABSOLUTE
-    elif r_ir == 0x4D:
+    # ORA-ABSOLUTE
+    elif r_ir == 0x0D:
         if r_stage == stage_e.T1:
-            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, en_p=0x82, sel_p=2, sel_main=0, en_a=1, sel_cin=0, sel_alu=4, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, en_p=0x82, sel_p=2, sel_main=0, en_a=1, sel_cin=0, sel_alu=3, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T2:
             ctrl_signals = ctrl_t(o_rw=1, sel_sub=1, sel_ain=0, sel_bin=2, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T3:
@@ -118,8 +116,8 @@ def sub_decoder_01(r_ir, r_stage):
         elif r_stage == stage_e.T0:
             ctrl_signals = ctrl_t(o_rw=1, sel_st=2, sel_main=4, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=4, sel_abl=4)
 
-    # LSR-ABSOLUTE
-    elif r_ir == 0x4E:
+    # ASL-ABSOLUTE
+    elif r_ir == 0x0E:
         if r_stage == stage_e.T1:
             ctrl_signals = ctrl_t(o_rw=1, en_ir=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T2:
@@ -129,30 +127,30 @@ def sub_decoder_01(r_ir, r_stage):
         elif r_stage == stage_e.T4:
             ctrl_signals = ctrl_t(o_rw=1, sel_main=1, sel_ain=2, sel_bin=0)
         elif r_stage == stage_e.T5:
-            ctrl_signals = ctrl_t(o_rw=0, sel_st=1, en_p=0x83, sel_p=2, sel_main=0, sel_cin=0, sel_alu=6)
+            ctrl_signals = ctrl_t(o_rw=0, sel_st=1, en_p=0x83, sel_p=2, sel_main=0, sel_cin=0, sel_alu=5)
         elif r_stage == stage_e.T0:
             ctrl_signals = ctrl_t(o_rw=0, sel_st=2, sel_abh=4, sel_abl=4)
 
     # illegal opcodes
-    elif r_ir == 0x4F:
+    elif r_ir == 0x0F:
         pass
 
-    # ---------- 0x50 ~ 0x5F ----------
-    # BVC-RELATIVE
-    elif r_ir == 0x50:
+    # ---------- 0x10 ~ 0x1F ----------
+    # BPL-RELATIVE
+    elif r_ir == 0x10:
         if r_stage == stage_e.T1:
             ctrl_signals = ctrl_t(o_rw=1, en_ir=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T2:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=7, sel_main=1, sel_sub=2, sel_ain=2, sel_bin=2, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(o_rw=1, sel_st=5, sel_main=1, sel_sub=2, sel_ain=2, sel_bin=2, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T3:
             ctrl_signals = ctrl_t(o_rw=1, sel_st=4, sel_main=6, sel_ain=2, sel_bin=3, sel_cin=0, sel_alu=0, sel_abl=2)
         elif r_stage == stage_e.T0:
             ctrl_signals = ctrl_t(o_rw=1, sel_st=2, sel_cin=3, sel_alu=0, sel_abh=2)
 
-    # EOR-(IND),Y
-    elif r_ir == 0x51:
+    # ORA-(IND),Y
+    elif r_ir == 0x11:
         if r_stage == stage_e.T1:
-            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, en_p=0x82, sel_p=2, sel_main=0, en_a=1, sel_cin=0, sel_alu=4, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, en_p=0x82, sel_p=2, sel_main=0, en_a=1, sel_cin=0, sel_alu=3, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T2:
             ctrl_signals = ctrl_t(o_rw=1, sel_sub=1, sel_ain=0, sel_bin=2, sel_abh=5, sel_abl=3, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T3:
@@ -165,296 +163,21 @@ def sub_decoder_01(r_ir, r_stage):
             ctrl_signals = ctrl_t(o_rw=1, sel_st=2, sel_main=4, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=4, sel_abl=4)
 
     # illegal opcodes
-    elif r_ir == 0x52:
+    elif r_ir == 0x12:
         pass
 
     # illegal opcodes
-    elif r_ir == 0x53:
+    elif r_ir == 0x13:
         pass
 
     # illegal opcodes
-    elif r_ir == 0x54:
+    elif r_ir == 0x14:
         pass
 
-    # EOR-ZPG,X
-    elif r_ir == 0x55:
+    # ORA-ZPG,X
+    elif r_ir == 0x15:
         if r_stage == stage_e.T1:
-            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, en_p=0x82, sel_p=2, sel_main=0, en_a=1, sel_cin=0, sel_alu=4, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
-        elif r_stage == stage_e.T2:
-            ctrl_signals = ctrl_t(o_rw=1, sel_main=2, sel_sub=1, sel_ain=2, sel_bin=2, sel_pch=1, sel_pcl=1)
-        elif r_stage == stage_e.T3:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=1, sel_cin=1, sel_alu=0, sel_abh=5, sel_abl=2)
-        elif r_stage == stage_e.T0:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=2, sel_main=4, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=4, sel_abl=4)
-
-    # LSR-ZPG,X
-    elif r_ir == 0x56:
-        if r_stage == stage_e.T1:
-            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
-        elif r_stage == stage_e.T2:
-            ctrl_signals = ctrl_t(o_rw=1, sel_main=2, sel_sub=1, sel_ain=2, sel_bin=2, sel_pch=1, sel_pcl=1)
-        elif r_stage == stage_e.T3:
-            ctrl_signals = ctrl_t(o_rw=1, sel_cin=0, sel_alu=0, sel_abh=5, sel_abl=2)
-        elif r_stage == stage_e.T4:
-            ctrl_signals = ctrl_t(o_rw=1, sel_main=1, sel_ain=2, sel_bin=0)
-        elif r_stage == stage_e.T5:
-            ctrl_signals = ctrl_t(o_rw=0, sel_st=1, en_p=0x83, sel_p=2, sel_main=0, sel_cin=0, sel_alu=6)
-        elif r_stage == stage_e.T0:
-            ctrl_signals = ctrl_t(o_rw=0, sel_st=2, sel_abh=4, sel_abl=4)
-
-    # illegal opcodes
-    elif r_ir == 0x57:
-        pass
-
-    # CLI-IMPLIED
-    elif r_ir == 0x58:
-        if r_stage == stage_e.T1:
-            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
-        elif r_stage == stage_e.T2:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=2, en_p=0x04, sel_p=0, sel_abh=4, sel_abl=4)
-
-    # EOR-ABS,Y
-    elif r_ir == 0x59:
-        if r_stage == stage_e.T1:
-            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, en_p=0x82, sel_p=2, sel_main=0, en_a=1, sel_cin=0, sel_alu=4, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
-        elif r_stage == stage_e.T2:
-            ctrl_signals = ctrl_t(o_rw=1, sel_main=3, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
-        elif r_stage == stage_e.T3:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=3, sel_sub=1, sel_ain=0, sel_bin=2, sel_cin=0, sel_alu=0, sel_abh=3, sel_abl=2)
-        elif r_stage == stage_e.T4:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=1, sel_cin=1, sel_alu=0, sel_abh=2)
-        elif r_stage == stage_e.T0:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=2, sel_main=4, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=4, sel_abl=4)
-
-    # illegal opcodes
-    elif r_ir == 0x5A:
-        pass
-
-    # illegal opcodes
-    elif r_ir == 0x5B:
-        pass
-
-    # illegal opcodes
-    elif r_ir == 0x5C:
-        pass
-
-    # EOR-ABS,X
-    elif r_ir == 0x5D:
-        if r_stage == stage_e.T1:
-            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, en_p=0x82, sel_p=2, sel_main=0, en_a=1, sel_cin=0, sel_alu=4, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
-        elif r_stage == stage_e.T2:
-            ctrl_signals = ctrl_t(o_rw=1, sel_main=2, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
-        elif r_stage == stage_e.T3:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=3, sel_sub=1, sel_ain=0, sel_bin=2, sel_cin=0, sel_alu=0, sel_abh=3, sel_abl=2)
-        elif r_stage == stage_e.T4:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=1, sel_cin=1, sel_alu=0, sel_abh=2)
-        elif r_stage == stage_e.T0:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=2, sel_main=4, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=4, sel_abl=4)
-
-    # LSR-ABS,X
-    elif r_ir == 0x5E:
-        if r_stage == stage_e.T1:
-            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
-        elif r_stage == stage_e.T2:
-            ctrl_signals = ctrl_t(o_rw=1, sel_main=2, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
-        elif r_stage == stage_e.T3:
-            ctrl_signals = ctrl_t(o_rw=1, sel_sub=1, sel_ain=0, sel_bin=2, sel_cin=0, sel_alu=0, sel_abh=3, sel_abl=2, sel_pch=1, sel_pcl=1)
-        elif r_stage == stage_e.T4:
-            ctrl_signals = ctrl_t(o_rw=1, sel_cin=1, sel_alu=0, sel_abh=2)
-        elif r_stage == stage_e.T5:
-            ctrl_signals = ctrl_t(o_rw=1, sel_main=1, sel_ain=2, sel_bin=0)
-        elif r_stage == stage_e.T6:
-            ctrl_signals = ctrl_t(o_rw=0, sel_st=1, en_p=0x83, sel_p=2, sel_main=0, sel_cin=0, sel_alu=6)
-        elif r_stage == stage_e.T0:
-            ctrl_signals = ctrl_t(o_rw=0, sel_st=2, sel_abh=4, sel_abl=4)
-
-    # illegal opcodes
-    elif r_ir == 0x5F:
-        pass
-
-    # ---------- 0x60 ~ 0x6F ----------
-    # RTS-IMPLIED
-    elif r_ir == 0x60:
-        if r_stage == stage_e.T1:
-            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
-        elif r_stage == stage_e.T2:
-            ctrl_signals = ctrl_t(o_rw=1, sel_sub=3, sel_ain=0, sel_bin=2, sel_abh=6, sel_abl=5)
-        elif r_stage == stage_e.T3:
-            ctrl_signals = ctrl_t(o_rw=1, sel_sub=0, sel_ain=0, sel_bin=2, sel_cin=1, sel_alu=0, sel_abh=6, sel_abl=2)
-        elif r_stage == stage_e.T4:
-            ctrl_signals = ctrl_t(o_rw=1, sel_main=0, sel_sub=1, en_sp=1, sel_ain=0, sel_bin=2, sel_cin=1, sel_alu=0, sel_abh=6, sel_abl=2)
-        elif r_stage == stage_e.T5:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=1, sel_cin=0, sel_alu=0, sel_abh=3, sel_abl=2, sel_pch=3, sel_pcl=2)
-        elif r_stage == stage_e.T0:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=2, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
-
-    # ADC-(IND,X)    elif r_ir == 0x61:
-        if r_stage == stage_e.T1:
-            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, en_p=0xC3, sel_p=2, sel_main=0, en_a=1, sel_cin=2, sel_alu=0, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
-        elif r_stage == stage_e.T2:
-            ctrl_signals = ctrl_t(o_rw=1, sel_main=2, sel_sub=1, sel_ain=2, sel_bin=2, sel_pch=1, sel_pcl=1)
-        elif r_stage == stage_e.T3:
-            ctrl_signals = ctrl_t(o_rw=1, sel_sub=0, sel_ain=0, sel_bin=2, sel_cin=0, sel_alu=0, sel_abh=5, sel_abl=2)
-        elif r_stage == stage_e.T4:
-            ctrl_signals = ctrl_t(o_rw=1, sel_sub=1, sel_ain=0, sel_bin=2, sel_cin=1, sel_alu=0, sel_abh=5, sel_abl=2)
-        elif r_stage == stage_e.T5:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=1, sel_cin=0, sel_alu=0, sel_abh=3, sel_abl=2)
-        elif r_stage == stage_e.T0:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=2, sel_main=4, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=4, sel_abl=4)
-
-    # illegal opcodes
-    elif r_ir == 0x62:
-        pass
-
-    # illegal opcodes
-    elif r_ir == 0x63:
-        pass
-
-    # illegal opcodes
-    elif r_ir == 0x64:
-        pass
-
-    # ADC-ZEROPAGE
-    elif r_ir == 0x65:
-        if r_stage == stage_e.T1:
-            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, en_p=0xC3, sel_p=2, sel_main=0, en_a=1, sel_cin=2, sel_alu=0, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
-        elif r_stage == stage_e.T2:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=1, sel_abh=5, sel_abl=3, sel_pch=1, sel_pcl=1)
-        elif r_stage == stage_e.T0:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=2, sel_main=4, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=4, sel_abl=4)
-
-    # ROR-ZEROPAGE
-    elif r_ir == 0x66:
-        if r_stage == stage_e.T1:
-            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
-        elif r_stage == stage_e.T2:
-            ctrl_signals = ctrl_t(o_rw=1, sel_abh=5, sel_abl=3, sel_pch=1, sel_pcl=1)
-        elif r_stage == stage_e.T3:
-            ctrl_signals = ctrl_t(o_rw=1, sel_main=1, sel_ain=2, sel_bin=0)
-        elif r_stage == stage_e.T4:
-            ctrl_signals = ctrl_t(o_rw=0, sel_st=1, en_p=0x83, sel_p=2, sel_main=0, sel_cin=2, sel_alu=8)
-        elif r_stage == stage_e.T0:
-            ctrl_signals = ctrl_t(o_rw=0, sel_st=2, sel_abh=4, sel_abl=4)
-
-    # illegal opcodes
-    elif r_ir == 0x67:
-        pass
-
-    # PLA-IMPLIED
-    elif r_ir == 0x68:
-        if r_stage == stage_e.T1:
-            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
-        elif r_stage == stage_e.T2:
-            ctrl_signals = ctrl_t(o_rw=1, sel_sub=3, sel_ain=0, sel_bin=2, sel_abh=6, sel_abl=5)
-        elif r_stage == stage_e.T3:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=1, sel_main=0, en_sp=1, sel_cin=1, sel_alu=0, sel_abh=6, sel_abl=2)
-        elif r_stage == stage_e.T0:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=2, en_p=0x82, sel_p=2, sel_main=1, en_a=1, sel_abh=4, sel_abl=4)
-
-    # ADC-IMMEDIATE
-    elif r_ir == 0x69:
-        if r_stage == stage_e.T1:
-            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, en_p=0xC3, sel_p=2, sel_main=0, en_a=1, sel_cin=2, sel_alu=0, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
-        elif r_stage == stage_e.T2:
-            ctrl_signals = ctrl_t(o_rw=1, sel_main=4, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
-
-    # ROR-ACCUM
-    elif r_ir == 0x6A:
-        if r_stage == stage_e.T1:
-            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, en_p=0x83, sel_p=2, sel_main=0, en_a=1, sel_cin=2, sel_alu=8, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
-        elif r_stage == stage_e.T2:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=2, sel_main=4, sel_ain=2, sel_bin=0, sel_abh=4, sel_abl=4)
-
-    # illegal opcodes
-    elif r_ir == 0x6B:
-        pass
-
-    # JMP-INDIRECT
-    elif r_ir == 0x6C:
-        if r_stage == stage_e.T1:
-            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
-        elif r_stage == stage_e.T2:
-            ctrl_signals = ctrl_t(o_rw=1, sel_sub=1, sel_ain=0, sel_bin=2, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
-        elif r_stage == stage_e.T3:
-            ctrl_signals = ctrl_t(o_rw=1, sel_sub=0, sel_ain=0, sel_bin=2, sel_cin=0, sel_alu=0, sel_abh=3, sel_abl=2)
-        elif r_stage == stage_e.T4:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=1, sel_sub=1, sel_ain=0, sel_bin=2, sel_cin=1, sel_alu=0, sel_abl=2)
-        elif r_stage == stage_e.T0:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=2, sel_cin=0, sel_alu=0, sel_abh=3, sel_abl=2, sel_pch=3, sel_pcl=2)
-
-    # ADC-ABSOLUTE
-    elif r_ir == 0x6D:
-        if r_stage == stage_e.T1:
-            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, en_p=0xC3, sel_p=2, sel_main=0, en_a=1, sel_cin=2, sel_alu=0, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
-        elif r_stage == stage_e.T2:
-            ctrl_signals = ctrl_t(o_rw=1, sel_sub=1, sel_ain=0, sel_bin=2, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
-        elif r_stage == stage_e.T3:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=1, sel_cin=0, sel_alu=0, sel_abh=3, sel_abl=2, sel_pch=1, sel_pcl=1)
-        elif r_stage == stage_e.T0:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=2, sel_main=4, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=4, sel_abl=4)
-
-    # ROR-ABSOLUTE
-    elif r_ir == 0x6E:
-        if r_stage == stage_e.T1:
-            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
-        elif r_stage == stage_e.T2:
-            ctrl_signals = ctrl_t(o_rw=1, sel_sub=1, sel_ain=0, sel_bin=2, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
-        elif r_stage == stage_e.T3:
-            ctrl_signals = ctrl_t(o_rw=1, sel_cin=0, sel_alu=0, sel_abh=3, sel_abl=2, sel_pch=1, sel_pcl=1)
-        elif r_stage == stage_e.T4:
-            ctrl_signals = ctrl_t(o_rw=1, sel_main=1, sel_ain=2, sel_bin=0)
-        elif r_stage == stage_e.T5:
-            ctrl_signals = ctrl_t(o_rw=0, sel_st=1, en_p=0x83, sel_p=2, sel_main=0, sel_cin=2, sel_alu=8)
-        elif r_stage == stage_e.T0:
-            ctrl_signals = ctrl_t(o_rw=0, sel_st=2, sel_abh=4, sel_abl=4)
-
-    # illegal opcodes
-    elif r_ir == 0x6F:
-        pass
-
-    # ---------- 0x70 ~ 0x7F ----------
-    # BVS-RELATIVE
-    elif r_ir == 0x70:
-        if r_stage == stage_e.T1:
-            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
-        elif r_stage == stage_e.T2:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=8, sel_main=1, sel_sub=2, sel_ain=2, sel_bin=2, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
-        elif r_stage == stage_e.T3:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=4, sel_main=6, sel_ain=2, sel_bin=3, sel_cin=0, sel_alu=0, sel_abl=2)
-        elif r_stage == stage_e.T0:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=2, sel_cin=3, sel_alu=0, sel_abh=2)
-
-    # ADC-(IND),Y
-    elif r_ir == 0x71:
-        if r_stage == stage_e.T1:
-            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, en_p=0xC3, sel_p=2, sel_main=0, en_a=1, sel_cin=2, sel_alu=0, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
-        elif r_stage == stage_e.T2:
-            ctrl_signals = ctrl_t(o_rw=1, sel_sub=1, sel_ain=0, sel_bin=2, sel_abh=5, sel_abl=3, sel_pch=1, sel_pcl=1)
-        elif r_stage == stage_e.T3:
-            ctrl_signals = ctrl_t(o_rw=1, sel_main=3, sel_sub=1, sel_ain=2, sel_bin=2, sel_cin=1, sel_alu=0, sel_abh=5, sel_abl=2)
-        elif r_stage == stage_e.T4:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=3, sel_sub=1, sel_ain=0, sel_bin=2, sel_cin=0, sel_alu=0, sel_abh=3, sel_abl=2)
-        elif r_stage == stage_e.T5:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=1, sel_cin=1, sel_alu=0, sel_abh=2)
-        elif r_stage == stage_e.T0:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=2, sel_main=4, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=4, sel_abl=4)
-
-    # illegal opcodes
-    elif r_ir == 0x72:
-        pass
-
-    # illegal opcodes
-    elif r_ir == 0x73:
-        pass
-
-    # illegal opcodes
-    elif r_ir == 0x74:
-        pass
-
-    # ADC-ZPG,X
-    elif r_ir == 0x75:
-        if r_stage == stage_e.T1:
-            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, en_p=0xC3, sel_p=2, sel_main=0, en_a=1, sel_cin=2, sel_alu=0, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, en_p=0x82, sel_p=2, sel_main=0, en_a=1, sel_cin=0, sel_alu=3, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T2:
             ctrl_signals = ctrl_t(o_rw=1, sel_main=2, sel_sub=1, sel_ain=2, sel_bin=2, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T3:
@@ -462,36 +185,25 @@ def sub_decoder_01(r_ir, r_stage):
         elif r_stage == stage_e.T0:
             ctrl_signals = ctrl_t(o_rw=1, sel_st=2, sel_main=4, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=4, sel_abl=4)
 
-    # ROR-ZPG,X
-    elif r_ir == 0x76:
-        if r_stage == stage_e.T1:
-            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
-        elif r_stage == stage_e.T2:
-            ctrl_signals = ctrl_t(o_rw=1, sel_main=2, sel_sub=1, sel_ain=2, sel_bin=2, sel_pch=1, sel_pcl=1)
-        elif r_stage == stage_e.T3:
-            ctrl_signals = ctrl_t(o_rw=1, sel_cin=0, sel_alu=0, sel_abh=5, sel_abl=2)
-        elif r_stage == stage_e.T4:
-            ctrl_signals = ctrl_t(o_rw=1, sel_main=1, sel_ain=2, sel_bin=0)
-        elif r_stage == stage_e.T5:
-            ctrl_signals = ctrl_t(o_rw=0, sel_st=1, en_p=0x83, sel_p=2, sel_main=0, sel_cin=2, sel_alu=8)
-        elif r_stage == stage_e.T0:
-            ctrl_signals = ctrl_t(o_rw=0, sel_st=2, sel_abh=4, sel_abl=4)
-
     # illegal opcodes
-    elif r_ir == 0x77:
+    elif r_ir == 0x16:
         pass
 
-    # SEI-IMPLIED
-    elif r_ir == 0x78:
+    # illegal opcodes
+    elif r_ir == 0x17:
+        pass
+
+    # CLC-IMPLIED
+    elif r_ir == 0x18:
         if r_stage == stage_e.T1:
             ctrl_signals = ctrl_t(o_rw=1, en_ir=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T2:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=2, en_p=0x04, sel_p=1, sel_abh=4, sel_abl=4)
+            ctrl_signals = ctrl_t(o_rw=1, sel_st=2, en_p=0x01, sel_p=0, sel_abh=4, sel_abl=4)
 
-    # ADC-ABS,Y
-    elif r_ir == 0x79:
+    # ORA-ABS,Y
+    elif r_ir == 0x19:
         if r_stage == stage_e.T1:
-            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, en_p=0xC3, sel_p=2, sel_main=0, en_a=1, sel_cin=2, sel_alu=0, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, en_p=0x82, sel_p=2, sel_main=0, en_a=1, sel_cin=0, sel_alu=3, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T2:
             ctrl_signals = ctrl_t(o_rw=1, sel_main=3, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T3:
@@ -502,21 +214,21 @@ def sub_decoder_01(r_ir, r_stage):
             ctrl_signals = ctrl_t(o_rw=1, sel_st=2, sel_main=4, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=4, sel_abl=4)
 
     # illegal opcodes
-    elif r_ir == 0x7A:
+    elif r_ir == 0x1A:
         pass
 
     # illegal opcodes
-    elif r_ir == 0x7B:
+    elif r_ir == 0x1B:
         pass
 
     # illegal opcodes
-    elif r_ir == 0x7C:
+    elif r_ir == 0x1C:
         pass
 
-    # ADC-ABS,X
-    elif r_ir == 0x7D:
+    # ORA-ABS,X
+    elif r_ir == 0x1D:
         if r_stage == stage_e.T1:
-            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, en_p=0xC3, sel_p=2, sel_main=0, en_a=1, sel_cin=2, sel_alu=0, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, en_p=0x82, sel_p=2, sel_main=0, en_a=1, sel_cin=0, sel_alu=3, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T2:
             ctrl_signals = ctrl_t(o_rw=1, sel_main=2, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T3:
@@ -526,8 +238,274 @@ def sub_decoder_01(r_ir, r_stage):
         elif r_stage == stage_e.T0:
             ctrl_signals = ctrl_t(o_rw=1, sel_st=2, sel_main=4, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=4, sel_abl=4)
 
-    # ROR-ABS,X
-    elif r_ir == 0x7E:
+    # illegal opcodes
+    elif r_ir == 0x1E:
+        pass
+
+    # illegal opcodes
+    elif r_ir == 0x1F:
+        pass
+
+    # ---------- 0x20 ~ 0x2F ----------
+    # JSR-ABSOLUTE
+    elif r_ir == 0x20:
+        if r_stage == stage_e.T1:
+            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+        elif r_stage == stage_e.T2:
+            ctrl_signals = ctrl_t(o_rw=1, sel_main=1, sel_sub=3, en_sp=1, sel_ain=0, sel_bin=2, sel_abh=6, sel_abl=5, sel_pch=1, sel_pcl=1)
+        elif r_stage == stage_e.T3:
+            ctrl_signals = ctrl_t(o_rw=1, sel_main=6, sel_sub=0, sel_ain=1, sel_bin=2, sel_cin=0, sel_alu=0, sel_abh=6, sel_abl=2)
+        elif r_stage == stage_e.T4:
+            ctrl_signals = ctrl_t(o_rw=0, sel_main=7, sel_sub=0, sel_ain=1, sel_bin=2, sel_cin=0, sel_alu=0, sel_abh=6, sel_abl=2)
+        elif r_stage == stage_e.T5:
+            ctrl_signals = ctrl_t(o_rw=0, sel_st=1, sel_sub=0, sel_ain=0, sel_bin=2, sel_cin=0, sel_alu=0, sel_abh=4, sel_abl=4)
+        elif r_stage == stage_e.T0:
+            ctrl_signals = ctrl_t(o_rw=1, sel_st=2, sel_main=0, en_sp=1, sel_cin=0, sel_alu=0, sel_abh=3, sel_abl=5, sel_pch=3, sel_pcl=3)
+
+    # AND-(IND,X)
+    elif r_ir == 0x21:
+        if r_stage == stage_e.T1:
+            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, en_p=0x82, sel_p=2, sel_main=0, en_a=1, sel_cin=0, sel_alu=2, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+        elif r_stage == stage_e.T2:
+            ctrl_signals = ctrl_t(o_rw=1, sel_main=2, sel_sub=1, sel_ain=2, sel_bin=2, sel_pch=1, sel_pcl=1)
+        elif r_stage == stage_e.T3:
+            ctrl_signals = ctrl_t(o_rw=1, sel_sub=0, sel_ain=0, sel_bin=2, sel_cin=0, sel_alu=0, sel_abh=5, sel_abl=2)
+        elif r_stage == stage_e.T4:
+            ctrl_signals = ctrl_t(o_rw=1, sel_sub=1, sel_ain=0, sel_bin=2, sel_cin=1, sel_alu=0, sel_abh=5, sel_abl=2)
+        elif r_stage == stage_e.T5:
+            ctrl_signals = ctrl_t(o_rw=1, sel_st=1, sel_cin=0, sel_alu=0, sel_abh=3, sel_abl=2)
+        elif r_stage == stage_e.T0:
+            ctrl_signals = ctrl_t(o_rw=1, sel_st=2, sel_main=4, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=4, sel_abl=4)
+
+    # illegal opcodes
+    elif r_ir == 0x22:
+        pass
+
+    # illegal opcodes
+    elif r_ir == 0x23:
+        pass
+
+    # BIT-ZEROPAGE
+    elif r_ir == 0x24:
+        if r_stage == stage_e.T1:
+            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, en_p=0x02, sel_p=2, sel_main=0, sel_cin=0, sel_alu=2, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+        elif r_stage == stage_e.T2:
+            ctrl_signals = ctrl_t(o_rw=1, sel_st=1, sel_abh=5, sel_abl=3, sel_pch=1, sel_pcl=1)
+        elif r_stage == stage_e.T0:
+            ctrl_signals = ctrl_t(o_rw=1, sel_st=2, en_p=0xC0, sel_p=3, sel_main=4, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=4, sel_abl=4)
+
+    # AND-ZEROPAGE
+    elif r_ir == 0x25:
+        if r_stage == stage_e.T1:
+            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, en_p=0x82, sel_p=2, sel_main=0, en_a=1, sel_cin=0, sel_alu=2, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+        elif r_stage == stage_e.T2:
+            ctrl_signals = ctrl_t(o_rw=1, sel_st=1, sel_abh=5, sel_abl=3, sel_pch=1, sel_pcl=1)
+        elif r_stage == stage_e.T0:
+            ctrl_signals = ctrl_t(o_rw=1, sel_st=2, sel_main=4, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=4, sel_abl=4)
+
+    # ROL-ZEROPAGE
+    elif r_ir == 0x26:
+        if r_stage == stage_e.T1:
+            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+        elif r_stage == stage_e.T2:
+            ctrl_signals = ctrl_t(o_rw=1, sel_abh=5, sel_abl=3, sel_pch=1, sel_pcl=1)
+        elif r_stage == stage_e.T3:
+            ctrl_signals = ctrl_t(o_rw=1, sel_main=1, sel_ain=2, sel_bin=0)
+        elif r_stage == stage_e.T4:
+            ctrl_signals = ctrl_t(o_rw=0, sel_st=1, en_p=0x83, sel_p=2, sel_main=0, sel_cin=2, sel_alu=7)
+        elif r_stage == stage_e.T0:
+            ctrl_signals = ctrl_t(o_rw=0, sel_st=2, sel_abh=4, sel_abl=4)
+
+    # illegal opcodes
+    elif r_ir == 0x27:
+        pass
+
+    # PLP-IMPLIED
+    elif r_ir == 0x28:
+        if r_stage == stage_e.T1:
+            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+        elif r_stage == stage_e.T2:
+            ctrl_signals = ctrl_t(o_rw=1, sel_sub=3, sel_ain=0, sel_bin=2, sel_abh=6, sel_abl=5)
+        elif r_stage == stage_e.T3:
+            ctrl_signals = ctrl_t(o_rw=1, sel_st=1, sel_main=0, en_sp=1, sel_cin=1, sel_alu=0, sel_abh=6, sel_abl=2)
+        elif r_stage == stage_e.T0:
+            ctrl_signals = ctrl_t(o_rw=1, sel_st=2, en_p=0xFF, sel_p=3, sel_abh=4, sel_abl=4)
+
+    # AND-IMMEDIATE
+    elif r_ir == 0x29:
+        if r_stage == stage_e.T1:
+            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, en_p=0x82, sel_p=2, sel_main=0, en_a=1, sel_cin=0, sel_alu=2, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+        elif r_stage == stage_e.T2:
+            ctrl_signals = ctrl_t(o_rw=1, sel_main=4, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+
+    # ROL-ACCUM
+    elif r_ir == 0x2A:
+        if r_stage == stage_e.T1:
+            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, en_p=0x83, sel_p=2, sel_main=0, en_a=1, sel_cin=2, sel_alu=7, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+        elif r_stage == stage_e.T2:
+            ctrl_signals = ctrl_t(o_rw=1, sel_st=2, sel_main=4, sel_ain=2, sel_bin=0, sel_abh=4, sel_abl=4)
+
+    # illegal opcodes
+    elif r_ir == 0x2B:
+        pass
+
+    # BIT-ABSOLUTE
+    elif r_ir == 0x2C:
+        if r_stage == stage_e.T1:
+            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, en_p=0x02, sel_p=2, sel_main=0, sel_cin=0, sel_alu=2, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+        elif r_stage == stage_e.T2:
+            ctrl_signals = ctrl_t(o_rw=1, sel_sub=1, sel_ain=0, sel_bin=2, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+        elif r_stage == stage_e.T3:
+            ctrl_signals = ctrl_t(o_rw=1, sel_st=1, sel_cin=0, sel_alu=0, sel_abh=3, sel_abl=2, sel_pch=1, sel_pcl=1)
+        elif r_stage == stage_e.T0:
+            ctrl_signals = ctrl_t(o_rw=1, sel_st=2, en_p=0xC0, sel_p=3, sel_main=4, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=4, sel_abl=4)
+
+    # AND-ABSOLUTE
+    elif r_ir == 0x2D:
+        if r_stage == stage_e.T1:
+            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, en_p=0x82, sel_p=2, sel_main=0, en_a=1, sel_cin=0, sel_alu=2, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+        elif r_stage == stage_e.T2:
+            ctrl_signals = ctrl_t(o_rw=1, sel_sub=1, sel_ain=0, sel_bin=2, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+        elif r_stage == stage_e.T3:
+            ctrl_signals = ctrl_t(o_rw=1, sel_st=1, sel_cin=0, sel_alu=0, sel_abh=3, sel_abl=2, sel_pch=1, sel_pcl=1)
+        elif r_stage == stage_e.T0:
+            ctrl_signals = ctrl_t(o_rw=1, sel_st=2, sel_main=4, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=4, sel_abl=4)
+
+    # ROL-ABSOLUTE
+    elif r_ir == 0x2E:
+        if r_stage == stage_e.T1:
+            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+        elif r_stage == stage_e.T2:
+            ctrl_signals = ctrl_t(o_rw=1, sel_sub=1, sel_ain=0, sel_bin=2, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+        elif r_stage == stage_e.T3:
+            ctrl_signals = ctrl_t(o_rw=1, sel_cin=0, sel_alu=0, sel_abh=3, sel_abl=2, sel_pch=1, sel_pcl=1)
+        elif r_stage == stage_e.T4:
+            ctrl_signals = ctrl_t(o_rw=1, sel_main=1, sel_ain=2, sel_bin=0)
+        elif r_stage == stage_e.T5:
+            ctrl_signals = ctrl_t(o_rw=0, sel_st=1, en_p=0x83, sel_p=2, sel_main=0, sel_cin=2, sel_alu=7)
+        elif r_stage == stage_e.T0:
+            ctrl_signals = ctrl_t(o_rw=0, sel_st=2, sel_abh=4, sel_abl=4)
+
+    # illegal opcodes
+    elif r_ir == 0x2F:
+        pass
+
+    # ---------- 0x30 ~ 0x3F ----------
+    # BMI-RELATIVE
+    elif r_ir == 0x30:
+        if r_stage == stage_e.T1:
+            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+        elif r_stage == stage_e.T2:
+            ctrl_signals = ctrl_t(o_rw=1, sel_st=6, sel_main=1, sel_sub=2, sel_ain=2, sel_bin=2, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+        elif r_stage == stage_e.T3:
+            ctrl_signals = ctrl_t(o_rw=1, sel_st=4, sel_main=6, sel_ain=2, sel_bin=3, sel_cin=0, sel_alu=0, sel_abl=2)
+        elif r_stage == stage_e.T0:
+            ctrl_signals = ctrl_t(o_rw=1, sel_st=2, sel_cin=3, sel_alu=0, sel_abh=2)
+
+    # AND-(IND),Y
+    elif r_ir == 0x31:
+        if r_stage == stage_e.T1:
+            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, en_p=0x82, sel_p=2, sel_main=0, en_a=1, sel_cin=0, sel_alu=2, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+        elif r_stage == stage_e.T2:
+            ctrl_signals = ctrl_t(o_rw=1, sel_sub=1, sel_ain=0, sel_bin=2, sel_abh=5, sel_abl=3, sel_pch=1, sel_pcl=1)
+        elif r_stage == stage_e.T3:
+            ctrl_signals = ctrl_t(o_rw=1, sel_main=3, sel_sub=1, sel_ain=2, sel_bin=2, sel_cin=1, sel_alu=0, sel_abh=5, sel_abl=2)
+        elif r_stage == stage_e.T4:
+            ctrl_signals = ctrl_t(o_rw=1, sel_st=3, sel_sub=1, sel_ain=0, sel_bin=2, sel_cin=0, sel_alu=0, sel_abh=3, sel_abl=2)
+        elif r_stage == stage_e.T5:
+            ctrl_signals = ctrl_t(o_rw=1, sel_st=1, sel_cin=1, sel_alu=0, sel_abh=2)
+        elif r_stage == stage_e.T0:
+            ctrl_signals = ctrl_t(o_rw=1, sel_st=2, sel_main=4, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=4, sel_abl=4)
+
+    # illegal opcodes
+    elif r_ir == 0x32:
+        pass
+
+    # illegal opcodes
+    elif r_ir == 0x33:
+        pass
+
+    # illegal opcodes
+    elif r_ir == 0x34:
+        pass
+
+    # AND-ZPG,X
+    elif r_ir == 0x35:
+        if r_stage == stage_e.T1:
+            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, en_p=0x82, sel_p=2, sel_main=0, en_a=1, sel_cin=0, sel_alu=2, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+        elif r_stage == stage_e.T2:
+            ctrl_signals = ctrl_t(o_rw=1, sel_main=2, sel_sub=1, sel_ain=2, sel_bin=2, sel_pch=1, sel_pcl=1)
+        elif r_stage == stage_e.T3:
+            ctrl_signals = ctrl_t(o_rw=1, sel_st=1, sel_cin=0, sel_alu=0, sel_abh=5, sel_abl=2)
+        elif r_stage == stage_e.T0:
+            ctrl_signals = ctrl_t(o_rw=1, sel_st=2, sel_main=4, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=4, sel_abl=4)
+
+    # ROL-ZPG,X
+    elif r_ir == 0x36:
+        if r_stage == stage_e.T1:
+            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+        elif r_stage == stage_e.T2:
+            ctrl_signals = ctrl_t(o_rw=1, sel_main=2, sel_sub=1, sel_ain=2, sel_bin=2, sel_pch=1, sel_pcl=1)
+        elif r_stage == stage_e.T3:
+            ctrl_signals = ctrl_t(o_rw=1, sel_cin=0, sel_alu=0, sel_abh=5, sel_abl=2)
+        elif r_stage == stage_e.T4:
+            ctrl_signals = ctrl_t(o_rw=1, sel_main=1, sel_ain=2, sel_bin=0)
+        elif r_stage == stage_e.T5:
+            ctrl_signals = ctrl_t(o_rw=0, sel_st=1, en_p=0x83, sel_p=2, sel_main=0, sel_cin=2, sel_alu=7)
+        elif r_stage == stage_e.T0:
+            ctrl_signals = ctrl_t(o_rw=0, sel_st=2, sel_abh=4, sel_abl=4)
+
+    # illegal opcodes
+    elif r_ir == 0x37:
+        pass
+
+    # SEC-IMPLIED
+    elif r_ir == 0x38:
+        if r_stage == stage_e.T1:
+            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+        elif r_stage == stage_e.T2:
+            ctrl_signals = ctrl_t(o_rw=1, sel_st=2, en_p=0x01, sel_p=1, sel_abh=4, sel_abl=4)
+
+    # AND-ABS,Y
+    elif r_ir == 0x39:
+        if r_stage == stage_e.T1:
+            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, en_p=0x82, sel_p=2, sel_main=0, en_a=1, sel_cin=0, sel_alu=2, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+        elif r_stage == stage_e.T2:
+            ctrl_signals = ctrl_t(o_rw=1, sel_main=3, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+        elif r_stage == stage_e.T3:
+            ctrl_signals = ctrl_t(o_rw=1, sel_st=3, sel_sub=1, sel_ain=0, sel_bin=2, sel_cin=0, sel_alu=0, sel_abh=3, sel_abl=2)
+        elif r_stage == stage_e.T4:
+            ctrl_signals = ctrl_t(o_rw=1, sel_st=1, sel_cin=1, sel_alu=0, sel_abh=2)
+        elif r_stage == stage_e.T0:
+            ctrl_signals = ctrl_t(o_rw=1, sel_st=2, sel_main=4, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=4, sel_abl=4)
+
+    # illegal opcodes
+    elif r_ir == 0x3A:
+        pass
+
+    # illegal opcodes
+    elif r_ir == 0x3B:
+        pass
+
+    # illegal opcodes
+    elif r_ir == 0x3C:
+        pass
+
+    # AND-ABS,X
+    elif r_ir == 0x3D:
+        if r_stage == stage_e.T1:
+            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, en_p=0x82, sel_p=2, sel_main=0, en_a=1, sel_cin=0, sel_alu=2, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+        elif r_stage == stage_e.T2:
+            ctrl_signals = ctrl_t(o_rw=1, sel_main=2, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+        elif r_stage == stage_e.T3:
+            ctrl_signals = ctrl_t(o_rw=1, sel_st=3, sel_sub=1, sel_ain=0, sel_bin=2, sel_cin=0, sel_alu=0, sel_abh=3, sel_abl=2)
+        elif r_stage == stage_e.T4:
+            ctrl_signals = ctrl_t(o_rw=1, sel_st=1, sel_cin=1, sel_alu=0, sel_abh=2)
+        elif r_stage == stage_e.T0:
+            ctrl_signals = ctrl_t(o_rw=1, sel_st=2, sel_main=4, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=4, sel_abl=4)
+
+    # ROL-ABS,X
+    elif r_ir == 0x3E:
         if r_stage == stage_e.T1:
             ctrl_signals = ctrl_t(o_rw=1, en_ir=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T2:
@@ -539,12 +517,12 @@ def sub_decoder_01(r_ir, r_stage):
         elif r_stage == stage_e.T5:
             ctrl_signals = ctrl_t(o_rw=1, sel_main=1, sel_ain=2, sel_bin=0)
         elif r_stage == stage_e.T6:
-            ctrl_signals = ctrl_t(o_rw=0, sel_st=1, en_p=0x83, sel_p=2, sel_main=0, sel_cin=2, sel_alu=8)
+            ctrl_signals = ctrl_t(o_rw=0, sel_st=1, en_p=0x83, sel_p=2, sel_main=0, sel_cin=2, sel_alu=7)
         elif r_stage == stage_e.T0:
             ctrl_signals = ctrl_t(o_rw=0, sel_st=2, sel_abh=4, sel_abl=4)
 
     # illegal opcodes
-    elif r_ir == 0x7F:
+    elif r_ir == 0x3F:
         pass
 
     # ---------- Default ----------
