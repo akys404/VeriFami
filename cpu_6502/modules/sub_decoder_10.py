@@ -8,7 +8,8 @@ def sub_decoder_10(r_ir, r_stage):
     if r_ir == 0x80:
         pass
 
-    # STA-(IND,X)    elif r_ir == 0x81:
+    # STA-(IND,X)
+    elif r_ir == 0x81:
         if r_stage == stage_e.T1:
             ctrl_signals = ctrl_t(o_rw=1, en_ir=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T2:
@@ -256,7 +257,8 @@ def sub_decoder_10(r_ir, r_stage):
         elif r_stage == stage_e.T2:
             ctrl_signals = ctrl_t(o_rw=1, en_p=0x82, sel_p=2, sel_main=1, en_y=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
 
-    # LDA-(IND,X)    elif r_ir == 0xA1:
+    # LDA-(IND,X)
+    elif r_ir == 0xA1:
         if r_stage == stage_e.T1:
             ctrl_signals = ctrl_t(o_rw=1, en_ir=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T2:

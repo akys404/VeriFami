@@ -19,7 +19,8 @@ def sub_decoder_01(r_ir, r_stage):
         elif r_stage == stage_e.T0:
             ctrl_signals = ctrl_t(o_rw=1, sel_st=2, sel_cin=0, sel_alu=0, sel_abh=3, sel_abl=2, sel_pch=3, sel_pcl=2)
 
-    # EOR-(IND,X)    elif r_ir == 0x41:
+    # EOR-(IND,X)
+    elif r_ir == 0x41:
         if r_stage == stage_e.T1:
             ctrl_signals = ctrl_t(o_rw=1, en_ir=1, en_p=0x82, sel_p=2, sel_main=0, en_a=1, sel_cin=0, sel_alu=4, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T2:
@@ -288,7 +289,8 @@ def sub_decoder_01(r_ir, r_stage):
         elif r_stage == stage_e.T0:
             ctrl_signals = ctrl_t(o_rw=1, sel_st=2, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
 
-    # ADC-(IND,X)    elif r_ir == 0x61:
+    # ADC-(IND,X)
+    elif r_ir == 0x61:
         if r_stage == stage_e.T1:
             ctrl_signals = ctrl_t(o_rw=1, en_ir=1, en_p=0xC3, sel_p=2, sel_main=0, en_a=1, sel_cin=2, sel_alu=0, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T2:
