@@ -26,6 +26,7 @@ class mod_cpu:
         self.r_pch = 0
         self.r_pcl = 0
         self.r_dor = 0
+        self.r_rw = 1
         # for debug
         self.p_debug = debug
         self.r_main = 0
@@ -58,22 +59,23 @@ class mod_cpu:
         r_pch = self.r_pch
         r_pcl = self.r_pcl
         r_dor = self.r_dor
+        r_rw = self.r_rw
 
     # Evaluate
         # Decoder
         ctrl = decoder(self)
 
         # input signals
-        f_rdy = i_rdy & ctrl.o_rw
+        f_rdy = i_rdy & r_rw
 
         # output signals
-        o_rw = ctrl.o_rw
+        o_rw = r_rw
         o_address = r_abh << 8 | r_abl
-        o_data = 0xFF if ctrl.o_rw else r_dor
+        o_data = 'zz' if r_rw else r_dor
         o_sync = r_stage == stage_e.T1
         
         if self.p_debug:
-            if not o_rw:
+            if not r_rw:
                 print(f'── WRITE ── address: 0x{o_address:04X}  data: 0x{o_data:02X}')
             elif not f_rdy:
                 print('── HALT ──')
@@ -297,6 +299,11 @@ class mod_cpu:
             self.r_sp = 0
         elif f_rdy and ctrl.en_sp:
             self.r_sp = d_main
+
+        if not rst_n:
+            self.r_rw = 1
+        else:
+            self.r_rw = ctrl.sel_rw
 
         if f_rdy:
             self.r_dor = d_main

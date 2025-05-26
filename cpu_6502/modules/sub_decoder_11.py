@@ -7,24 +7,24 @@ def sub_decoder_11(r_ir, r_stage):
     # CPY-IMMEDIATE
     if r_ir == 0xC0:
         if r_stage == stage_e.T1:
-            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, en_p=0x83, sel_p=2, sel_main=0, en_a=1, sel_cin=1, sel_alu=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(sel_rw=1, en_ir=1, en_p=0x83, sel_p=2, sel_main=0, en_a=1, sel_cin=1, sel_alu=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T2:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=2, sel_main=3, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_st=2, sel_main=3, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
 
     # CMP-(IND,X)
     elif r_ir == 0xC1:
         if r_stage == stage_e.T1:
-            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, en_p=0x83, sel_p=2, sel_main=0, en_a=1, sel_cin=0, sel_alu=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(sel_rw=1, en_ir=1, en_p=0x83, sel_p=2, sel_main=0, en_a=1, sel_cin=0, sel_alu=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T2:
-            ctrl_signals = ctrl_t(o_rw=1, sel_main=2, sel_sub=1, sel_ain=2, sel_bin=2, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_main=2, sel_sub=1, sel_ain=2, sel_bin=2, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T3:
-            ctrl_signals = ctrl_t(o_rw=1, sel_sub=0, sel_ain=0, sel_bin=2, sel_cin=0, sel_alu=0, sel_abh=5, sel_abl=2)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_sub=0, sel_ain=0, sel_bin=2, sel_cin=0, sel_alu=0, sel_abh=5, sel_abl=2)
         elif r_stage == stage_e.T4:
-            ctrl_signals = ctrl_t(o_rw=1, sel_sub=1, sel_ain=0, sel_bin=2, sel_cin=1, sel_alu=0, sel_abh=5, sel_abl=2)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_sub=1, sel_ain=0, sel_bin=2, sel_cin=1, sel_alu=0, sel_abh=5, sel_abl=2)
         elif r_stage == stage_e.T5:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=1, sel_cin=0, sel_alu=0, sel_abh=3, sel_abl=2)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_st=1, sel_cin=0, sel_alu=0, sel_abh=3, sel_abl=2)
         elif r_stage == stage_e.T0:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=2, sel_main=4, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=4, sel_abl=4)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_st=2, sel_main=4, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=4, sel_abl=4)
 
     # illegal opcodes
     elif r_ir == 0xC2:
@@ -37,33 +37,33 @@ def sub_decoder_11(r_ir, r_stage):
     # CPY-ZEROPAGE
     elif r_ir == 0xC4:
         if r_stage == stage_e.T1:
-            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, en_p=0x83, sel_p=2, sel_main=0, en_a=1, sel_cin=1, sel_alu=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(sel_rw=1, en_ir=1, en_p=0x83, sel_p=2, sel_main=0, en_a=1, sel_cin=1, sel_alu=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T2:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=1, sel_abh=5, sel_abl=3, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_st=1, sel_abh=5, sel_abl=3, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T0:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=2, sel_main=3, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=4, sel_abl=4)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_st=2, sel_main=3, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=4, sel_abl=4)
 
     # CMP-ZEROPAGE
     elif r_ir == 0xC5:
         if r_stage == stage_e.T1:
-            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, en_p=0x83, sel_p=2, sel_main=0, en_a=1, sel_cin=0, sel_alu=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(sel_rw=1, en_ir=1, en_p=0x83, sel_p=2, sel_main=0, en_a=1, sel_cin=0, sel_alu=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T2:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=1, sel_abh=5, sel_abl=3, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_st=1, sel_abh=5, sel_abl=3, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T0:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=2, sel_main=4, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=4, sel_abl=4)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_st=2, sel_main=4, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=4, sel_abl=4)
 
     # DEC-ZEROPAGE
     elif r_ir == 0xC6:
         if r_stage == stage_e.T1:
-            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(sel_rw=1, en_ir=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T2:
-            ctrl_signals = ctrl_t(o_rw=1, sel_abh=5, sel_abl=3, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_abh=5, sel_abl=3, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T3:
-            ctrl_signals = ctrl_t(o_rw=1, sel_sub=1, sel_ain=1, sel_bin=2)
+            ctrl_signals = ctrl_t(sel_rw=0, sel_sub=1, sel_ain=1, sel_bin=2)
         elif r_stage == stage_e.T4:
-            ctrl_signals = ctrl_t(o_rw=0, sel_st=1, en_p=0x82, sel_p=2, sel_main=0, sel_cin=0, sel_alu=0)
+            ctrl_signals = ctrl_t(sel_rw=0, sel_st=1, en_p=0x82, sel_p=2, sel_main=0, sel_cin=0, sel_alu=0)
         elif r_stage == stage_e.T0:
-            ctrl_signals = ctrl_t(o_rw=0, sel_st=2, sel_abh=4, sel_abl=4)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_st=2, sel_abh=4, sel_abl=4)
 
     # illegal opcodes
     elif r_ir == 0xC7:
@@ -72,23 +72,23 @@ def sub_decoder_11(r_ir, r_stage):
     # INY-IMPLIED
     elif r_ir == 0xC8:
         if r_stage == stage_e.T1:
-            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, en_p=0x82, sel_p=2, sel_main=0, en_y=1, sel_cin=1, sel_alu=0, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(sel_rw=1, en_ir=1, en_p=0x82, sel_p=2, sel_main=0, en_y=1, sel_cin=1, sel_alu=0, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T2:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=2, sel_main=3, sel_ain=2, sel_bin=0, sel_abh=4, sel_abl=4)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_st=2, sel_main=3, sel_ain=2, sel_bin=0, sel_abh=4, sel_abl=4)
 
     # CMP-IMMEDIATE
     elif r_ir == 0xC9:
         if r_stage == stage_e.T1:
-            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, en_p=0x83, sel_p=2, sel_main=0, en_a=1, sel_cin=0, sel_alu=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(sel_rw=1, en_ir=1, en_p=0x83, sel_p=2, sel_main=0, en_a=1, sel_cin=0, sel_alu=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T2:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=2, sel_main=4, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_st=2, sel_main=4, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
 
     # DEX-IMPLIED
     elif r_ir == 0xCA:
         if r_stage == stage_e.T1:
-            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, en_p=0x82, sel_p=2, sel_main=0, en_x=1, sel_cin=0, sel_alu=0, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(sel_rw=1, en_ir=1, en_p=0x82, sel_p=2, sel_main=0, en_x=1, sel_cin=0, sel_alu=0, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T2:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=2, sel_main=2, sel_ain=2, sel_bin=1, sel_abh=4, sel_abl=4)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_st=2, sel_main=2, sel_ain=2, sel_bin=1, sel_abh=4, sel_abl=4)
 
     # illegal opcodes
     elif r_ir == 0xCB:
@@ -97,39 +97,39 @@ def sub_decoder_11(r_ir, r_stage):
     # CPY-ABSOLUTE
     elif r_ir == 0xCC:
         if r_stage == stage_e.T1:
-            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, en_p=0x83, sel_p=2, sel_main=0, en_a=1, sel_cin=1, sel_alu=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(sel_rw=1, en_ir=1, en_p=0x83, sel_p=2, sel_main=0, en_a=1, sel_cin=1, sel_alu=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T2:
-            ctrl_signals = ctrl_t(o_rw=1, sel_sub=1, sel_ain=0, sel_bin=2, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_sub=1, sel_ain=0, sel_bin=2, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T3:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=1, sel_cin=0, sel_alu=0, sel_abh=3, sel_abl=2, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_st=1, sel_cin=0, sel_alu=0, sel_abh=3, sel_abl=2, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T0:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=2, sel_main=3, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=4, sel_abl=4)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_st=2, sel_main=3, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=4, sel_abl=4)
 
     # CMP-ABSOLUTE
     elif r_ir == 0xCD:
         if r_stage == stage_e.T1:
-            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, en_p=0x83, sel_p=2, sel_main=0, en_a=1, sel_cin=0, sel_alu=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(sel_rw=1, en_ir=1, en_p=0x83, sel_p=2, sel_main=0, en_a=1, sel_cin=0, sel_alu=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T2:
-            ctrl_signals = ctrl_t(o_rw=1, sel_sub=1, sel_ain=0, sel_bin=2, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_sub=1, sel_ain=0, sel_bin=2, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T3:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=1, sel_cin=0, sel_alu=0, sel_abh=3, sel_abl=2, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_st=1, sel_cin=0, sel_alu=0, sel_abh=3, sel_abl=2, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T0:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=2, sel_main=4, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=4, sel_abl=4)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_st=2, sel_main=4, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=4, sel_abl=4)
 
     # DEC-ABSOLUTE
     elif r_ir == 0xCE:
         if r_stage == stage_e.T1:
-            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(sel_rw=1, en_ir=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T2:
-            ctrl_signals = ctrl_t(o_rw=1, sel_sub=1, sel_ain=0, sel_bin=2, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_sub=1, sel_ain=0, sel_bin=2, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T3:
-            ctrl_signals = ctrl_t(o_rw=1, sel_cin=0, sel_alu=0, sel_abh=3, sel_abl=2, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_cin=0, sel_alu=0, sel_abh=3, sel_abl=2, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T4:
-            ctrl_signals = ctrl_t(o_rw=1, sel_sub=1, sel_ain=1, sel_bin=2)
+            ctrl_signals = ctrl_t(sel_rw=0, sel_sub=1, sel_ain=1, sel_bin=2)
         elif r_stage == stage_e.T5:
-            ctrl_signals = ctrl_t(o_rw=0, sel_st=1, en_p=0x82, sel_p=2, sel_main=0, sel_cin=0, sel_alu=0)
+            ctrl_signals = ctrl_t(sel_rw=0, sel_st=1, en_p=0x82, sel_p=2, sel_main=0, sel_cin=0, sel_alu=0)
         elif r_stage == stage_e.T0:
-            ctrl_signals = ctrl_t(o_rw=0, sel_st=2, sel_abh=4, sel_abl=4)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_st=2, sel_abh=4, sel_abl=4)
 
     # illegal opcodes
     elif r_ir == 0xCF:
@@ -139,28 +139,28 @@ def sub_decoder_11(r_ir, r_stage):
     # BNE-RELATIVE
     elif r_ir == 0xD0:
         if r_stage == stage_e.T1:
-            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(sel_rw=1, en_ir=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T2:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=0xB, sel_main=1, sel_sub=2, sel_ain=2, sel_bin=2, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_st=0xB, sel_main=1, sel_sub=2, sel_ain=2, sel_bin=2, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T3:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=4, sel_main=6, sel_ain=2, sel_bin=3, sel_cin=0, sel_alu=0, sel_abl=2)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_st=4, sel_main=6, sel_ain=2, sel_bin=3, sel_cin=0, sel_alu=0, sel_abl=2)
         elif r_stage == stage_e.T0:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=2, sel_cin=3, sel_alu=0, sel_abh=2)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_st=2, sel_cin=3, sel_alu=0, sel_abh=2)
 
     # CMP-(IND),Y
     elif r_ir == 0xD1:
         if r_stage == stage_e.T1:
-            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, en_p=0x83, sel_p=2, sel_main=0, en_a=1, sel_cin=0, sel_alu=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(sel_rw=1, en_ir=1, en_p=0x83, sel_p=2, sel_main=0, en_a=1, sel_cin=0, sel_alu=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T2:
-            ctrl_signals = ctrl_t(o_rw=1, sel_sub=1, sel_ain=0, sel_bin=2, sel_abh=5, sel_abl=3, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_sub=1, sel_ain=0, sel_bin=2, sel_abh=5, sel_abl=3, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T3:
-            ctrl_signals = ctrl_t(o_rw=1, sel_main=3, sel_sub=1, sel_ain=2, sel_bin=2, sel_cin=1, sel_alu=0, sel_abh=5, sel_abl=2)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_main=3, sel_sub=1, sel_ain=2, sel_bin=2, sel_cin=1, sel_alu=0, sel_abh=5, sel_abl=2)
         elif r_stage == stage_e.T4:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=3, sel_sub=1, sel_ain=0, sel_bin=2, sel_cin=0, sel_alu=0, sel_abh=3, sel_abl=2)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_st=3, sel_sub=1, sel_ain=0, sel_bin=2, sel_cin=0, sel_alu=0, sel_abh=3, sel_abl=2)
         elif r_stage == stage_e.T5:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=1, sel_cin=1, sel_alu=0, sel_abh=2)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_st=1, sel_cin=1, sel_alu=0, sel_abh=2)
         elif r_stage == stage_e.T0:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=2, sel_main=4, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=4, sel_abl=4)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_st=2, sel_main=4, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=4, sel_abl=4)
 
     # illegal opcodes
     elif r_ir == 0xD2:
@@ -177,28 +177,28 @@ def sub_decoder_11(r_ir, r_stage):
     # CMP-ZPG,X
     elif r_ir == 0xD5:
         if r_stage == stage_e.T1:
-            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, en_p=0x83, sel_p=2, sel_main=0, en_a=1, sel_cin=0, sel_alu=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(sel_rw=1, en_ir=1, en_p=0x83, sel_p=2, sel_main=0, en_a=1, sel_cin=0, sel_alu=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T2:
-            ctrl_signals = ctrl_t(o_rw=1, sel_main=2, sel_sub=1, sel_ain=2, sel_bin=2, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_main=2, sel_sub=1, sel_ain=2, sel_bin=2, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T3:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=1, sel_cin=0, sel_alu=0, sel_abh=5, sel_abl=2)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_st=1, sel_cin=0, sel_alu=0, sel_abh=5, sel_abl=2)
         elif r_stage == stage_e.T0:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=2, sel_main=4, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=4, sel_abl=4)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_st=2, sel_main=4, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=4, sel_abl=4)
 
     # DEC-ZPG,X
     elif r_ir == 0xD6:
         if r_stage == stage_e.T1:
-            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(sel_rw=1, en_ir=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T2:
-            ctrl_signals = ctrl_t(o_rw=1, sel_main=2, sel_sub=1, sel_ain=2, sel_bin=2, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_main=2, sel_sub=1, sel_ain=2, sel_bin=2, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T3:
-            ctrl_signals = ctrl_t(o_rw=1, sel_cin=0, sel_alu=0, sel_abh=5, sel_abl=2)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_cin=0, sel_alu=0, sel_abh=5, sel_abl=2)
         elif r_stage == stage_e.T4:
-            ctrl_signals = ctrl_t(o_rw=1, sel_sub=1, sel_ain=1, sel_bin=2)
+            ctrl_signals = ctrl_t(sel_rw=0, sel_sub=1, sel_ain=1, sel_bin=2)
         elif r_stage == stage_e.T5:
-            ctrl_signals = ctrl_t(o_rw=0, sel_st=1, en_p=0x82, sel_p=2, sel_main=0, sel_cin=0, sel_alu=0)
+            ctrl_signals = ctrl_t(sel_rw=0, sel_st=1, en_p=0x82, sel_p=2, sel_main=0, sel_cin=0, sel_alu=0)
         elif r_stage == stage_e.T0:
-            ctrl_signals = ctrl_t(o_rw=0, sel_st=2, sel_abh=4, sel_abl=4)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_st=2, sel_abh=4, sel_abl=4)
 
     # illegal opcodes
     elif r_ir == 0xD7:
@@ -207,22 +207,22 @@ def sub_decoder_11(r_ir, r_stage):
     # CLD-IMPLIED
     elif r_ir == 0xD8:
         if r_stage == stage_e.T1:
-            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(sel_rw=1, en_ir=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T2:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=2, en_p=0x08, sel_p=0, sel_abh=4, sel_abl=4)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_st=2, en_p=0x08, sel_p=0, sel_abh=4, sel_abl=4)
 
     # CMP-ABS,Y
     elif r_ir == 0xD9:
         if r_stage == stage_e.T1:
-            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, en_p=0x83, sel_p=2, sel_main=0, en_a=1, sel_cin=0, sel_alu=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(sel_rw=1, en_ir=1, en_p=0x83, sel_p=2, sel_main=0, en_a=1, sel_cin=0, sel_alu=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T2:
-            ctrl_signals = ctrl_t(o_rw=1, sel_main=3, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_main=3, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T3:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=3, sel_sub=1, sel_ain=0, sel_bin=2, sel_cin=0, sel_alu=0, sel_abh=3, sel_abl=2)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_st=3, sel_sub=1, sel_ain=0, sel_bin=2, sel_cin=0, sel_alu=0, sel_abh=3, sel_abl=2)
         elif r_stage == stage_e.T4:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=1, sel_cin=1, sel_alu=0, sel_abh=2)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_st=1, sel_cin=1, sel_alu=0, sel_abh=2)
         elif r_stage == stage_e.T0:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=2, sel_main=4, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=4, sel_abl=4)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_st=2, sel_main=4, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=4, sel_abl=4)
 
     # illegal opcodes
     elif r_ir == 0xDA:
@@ -239,32 +239,32 @@ def sub_decoder_11(r_ir, r_stage):
     # CMP-ABS,X
     elif r_ir == 0xDD:
         if r_stage == stage_e.T1:
-            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, en_p=0x83, sel_p=2, sel_main=0, en_a=1, sel_cin=0, sel_alu=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(sel_rw=1, en_ir=1, en_p=0x83, sel_p=2, sel_main=0, en_a=1, sel_cin=0, sel_alu=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T2:
-            ctrl_signals = ctrl_t(o_rw=1, sel_main=2, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_main=2, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T3:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=3, sel_sub=1, sel_ain=0, sel_bin=2, sel_cin=0, sel_alu=0, sel_abh=3, sel_abl=2)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_st=3, sel_sub=1, sel_ain=0, sel_bin=2, sel_cin=0, sel_alu=0, sel_abh=3, sel_abl=2)
         elif r_stage == stage_e.T4:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=1, sel_cin=1, sel_alu=0, sel_abh=2)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_st=1, sel_cin=1, sel_alu=0, sel_abh=2)
         elif r_stage == stage_e.T0:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=2, sel_main=4, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=4, sel_abl=4)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_st=2, sel_main=4, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=4, sel_abl=4)
 
     # DEC-ABS,X
     elif r_ir == 0xDE:
         if r_stage == stage_e.T1:
-            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(sel_rw=1, en_ir=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T2:
-            ctrl_signals = ctrl_t(o_rw=1, sel_main=2, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_main=2, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T3:
-            ctrl_signals = ctrl_t(o_rw=1, sel_sub=1, sel_ain=0, sel_bin=2, sel_cin=0, sel_alu=0, sel_abh=3, sel_abl=2, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_sub=1, sel_ain=0, sel_bin=2, sel_cin=0, sel_alu=0, sel_abh=3, sel_abl=2, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T4:
-            ctrl_signals = ctrl_t(o_rw=1, sel_cin=1, sel_alu=0, sel_abh=2)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_cin=1, sel_alu=0, sel_abh=2)
         elif r_stage == stage_e.T5:
-            ctrl_signals = ctrl_t(o_rw=1, sel_sub=1, sel_ain=1, sel_bin=2)
+            ctrl_signals = ctrl_t(sel_rw=0, sel_sub=1, sel_ain=1, sel_bin=2)
         elif r_stage == stage_e.T6:
-            ctrl_signals = ctrl_t(o_rw=0, sel_st=1, en_p=0x82, sel_p=2, sel_main=0, sel_cin=0, sel_alu=0)
+            ctrl_signals = ctrl_t(sel_rw=0, sel_st=1, en_p=0x82, sel_p=2, sel_main=0, sel_cin=0, sel_alu=0)
         elif r_stage == stage_e.T0:
-            ctrl_signals = ctrl_t(o_rw=0, sel_st=2, sel_abh=4, sel_abl=4)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_st=2, sel_abh=4, sel_abl=4)
 
     # illegal opcodes
     elif r_ir == 0xDF:
@@ -274,24 +274,24 @@ def sub_decoder_11(r_ir, r_stage):
     # CPX-IMMEDIATE
     elif r_ir == 0xE0:
         if r_stage == stage_e.T1:
-            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, en_p=0x83, sel_p=2, sel_main=0, en_a=1, sel_cin=1, sel_alu=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(sel_rw=1, en_ir=1, en_p=0x83, sel_p=2, sel_main=0, en_a=1, sel_cin=1, sel_alu=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T2:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=2, sel_main=2, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_st=2, sel_main=2, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
 
     # SBC-(IND,X)
     elif r_ir == 0xE1:
         if r_stage == stage_e.T1:
-            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, en_p=0x82, sel_p=2, sel_main=0, en_a=1, sel_cin=2, sel_alu=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(sel_rw=1, en_ir=1, en_p=0x82, sel_p=2, sel_main=0, en_a=1, sel_cin=2, sel_alu=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T2:
-            ctrl_signals = ctrl_t(o_rw=1, sel_main=2, sel_sub=1, sel_ain=2, sel_bin=2, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_main=2, sel_sub=1, sel_ain=2, sel_bin=2, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T3:
-            ctrl_signals = ctrl_t(o_rw=1, sel_sub=0, sel_ain=0, sel_bin=2, sel_cin=0, sel_alu=0, sel_abh=5, sel_abl=2)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_sub=0, sel_ain=0, sel_bin=2, sel_cin=0, sel_alu=0, sel_abh=5, sel_abl=2)
         elif r_stage == stage_e.T4:
-            ctrl_signals = ctrl_t(o_rw=1, sel_sub=1, sel_ain=0, sel_bin=2, sel_cin=1, sel_alu=0, sel_abh=5, sel_abl=2)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_sub=1, sel_ain=0, sel_bin=2, sel_cin=1, sel_alu=0, sel_abh=5, sel_abl=2)
         elif r_stage == stage_e.T5:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=1, sel_cin=0, sel_alu=0, sel_abh=3, sel_abl=2)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_st=1, sel_cin=0, sel_alu=0, sel_abh=3, sel_abl=2)
         elif r_stage == stage_e.T0:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=2, sel_main=4, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=4, sel_abl=4)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_st=2, sel_main=4, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=4, sel_abl=4)
 
     # illegal opcodes
     elif r_ir == 0xE2:
@@ -304,33 +304,33 @@ def sub_decoder_11(r_ir, r_stage):
     # CPX-ZEROPAGE
     elif r_ir == 0xE4:
         if r_stage == stage_e.T1:
-            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, en_p=0x83, sel_p=2, sel_main=0, en_a=1, sel_cin=1, sel_alu=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(sel_rw=1, en_ir=1, en_p=0x83, sel_p=2, sel_main=0, en_a=1, sel_cin=1, sel_alu=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T2:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=1, sel_abh=5, sel_abl=3, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_st=1, sel_abh=5, sel_abl=3, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T0:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=2, sel_main=2, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=4, sel_abl=4)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_st=2, sel_main=2, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=4, sel_abl=4)
 
     # SBC-ZEROPAGE
     elif r_ir == 0xE5:
         if r_stage == stage_e.T1:
-            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, en_p=0x82, sel_p=2, sel_main=0, en_a=1, sel_cin=2, sel_alu=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(sel_rw=1, en_ir=1, en_p=0x82, sel_p=2, sel_main=0, en_a=1, sel_cin=2, sel_alu=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T2:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=1, sel_abh=5, sel_abl=3, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_st=1, sel_abh=5, sel_abl=3, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T0:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=2, sel_main=4, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=4, sel_abl=4)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_st=2, sel_main=4, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=4, sel_abl=4)
 
     # INC-ZEROPAGE
     elif r_ir == 0xE6:
         if r_stage == stage_e.T1:
-            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(sel_rw=1, en_ir=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T2:
-            ctrl_signals = ctrl_t(o_rw=1, sel_abh=5, sel_abl=3, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_abh=5, sel_abl=3, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T3:
-            ctrl_signals = ctrl_t(o_rw=1, sel_sub=1, sel_ain=0, sel_bin=2)
+            ctrl_signals = ctrl_t(sel_rw=0, sel_sub=1, sel_ain=0, sel_bin=2)
         elif r_stage == stage_e.T4:
-            ctrl_signals = ctrl_t(o_rw=0, sel_st=1, en_p=0x82, sel_p=2, sel_main=0, sel_cin=1, sel_alu=0)
+            ctrl_signals = ctrl_t(sel_rw=0, sel_st=1, en_p=0x82, sel_p=2, sel_main=0, sel_cin=1, sel_alu=0)
         elif r_stage == stage_e.T0:
-            ctrl_signals = ctrl_t(o_rw=0, sel_st=2, sel_abh=4, sel_abl=4)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_st=2, sel_abh=4, sel_abl=4)
 
     # illegal opcodes
     elif r_ir == 0xE7:
@@ -339,23 +339,23 @@ def sub_decoder_11(r_ir, r_stage):
     # INX-IMPLIED
     elif r_ir == 0xE8:
         if r_stage == stage_e.T1:
-            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, en_p=0x82, sel_p=2, sel_main=0, en_x=1, sel_cin=1, sel_alu=0, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(sel_rw=1, en_ir=1, en_p=0x82, sel_p=2, sel_main=0, en_x=1, sel_cin=1, sel_alu=0, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T2:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=2, sel_main=2, sel_ain=2, sel_bin=0, sel_abh=4, sel_abl=4)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_st=2, sel_main=2, sel_ain=2, sel_bin=0, sel_abh=4, sel_abl=4)
 
     # SBC-IMMEDIATE
     elif r_ir == 0xE9:
         if r_stage == stage_e.T1:
-            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, en_p=0x82, sel_p=2, sel_main=0, en_a=1, sel_cin=2, sel_alu=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(sel_rw=1, en_ir=1, en_p=0x82, sel_p=2, sel_main=0, en_a=1, sel_cin=2, sel_alu=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T2:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=2, sel_main=4, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_st=2, sel_main=4, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
 
     # NOP-IMPLIED
     elif r_ir == 0xEA:
         if r_stage == stage_e.T1:
-            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(sel_rw=1, en_ir=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T2:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=2, sel_abh=4, sel_abl=4)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_st=2, sel_abh=4, sel_abl=4)
 
     # illegal opcodes
     elif r_ir == 0xEB:
@@ -364,39 +364,39 @@ def sub_decoder_11(r_ir, r_stage):
     # CPX-ABSOLUTE
     elif r_ir == 0xEC:
         if r_stage == stage_e.T1:
-            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, en_p=0x83, sel_p=2, sel_main=0, en_a=1, sel_cin=1, sel_alu=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(sel_rw=1, en_ir=1, en_p=0x83, sel_p=2, sel_main=0, en_a=1, sel_cin=1, sel_alu=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T2:
-            ctrl_signals = ctrl_t(o_rw=1, sel_sub=1, sel_ain=0, sel_bin=2, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_sub=1, sel_ain=0, sel_bin=2, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T3:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=1, sel_cin=0, sel_alu=0, sel_abh=3, sel_abl=2, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_st=1, sel_cin=0, sel_alu=0, sel_abh=3, sel_abl=2, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T0:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=2, sel_main=2, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=4, sel_abl=4)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_st=2, sel_main=2, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=4, sel_abl=4)
 
     # SBC-ABSOLUTE
     elif r_ir == 0xED:
         if r_stage == stage_e.T1:
-            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, en_p=0x82, sel_p=2, sel_main=0, en_a=1, sel_cin=2, sel_alu=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(sel_rw=1, en_ir=1, en_p=0x82, sel_p=2, sel_main=0, en_a=1, sel_cin=2, sel_alu=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T2:
-            ctrl_signals = ctrl_t(o_rw=1, sel_sub=1, sel_ain=0, sel_bin=2, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_sub=1, sel_ain=0, sel_bin=2, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T3:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=1, sel_cin=0, sel_alu=0, sel_abh=3, sel_abl=2, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_st=1, sel_cin=0, sel_alu=0, sel_abh=3, sel_abl=2, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T0:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=2, sel_main=4, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=4, sel_abl=4)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_st=2, sel_main=4, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=4, sel_abl=4)
 
     # INC-ABSOLUTE
     elif r_ir == 0xEE:
         if r_stage == stage_e.T1:
-            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(sel_rw=1, en_ir=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T2:
-            ctrl_signals = ctrl_t(o_rw=1, sel_sub=1, sel_ain=0, sel_bin=2, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_sub=1, sel_ain=0, sel_bin=2, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T3:
-            ctrl_signals = ctrl_t(o_rw=1, sel_cin=0, sel_alu=0, sel_abh=3, sel_abl=2, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_cin=0, sel_alu=0, sel_abh=3, sel_abl=2, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T4:
-            ctrl_signals = ctrl_t(o_rw=1, sel_sub=1, sel_ain=0, sel_bin=2)
+            ctrl_signals = ctrl_t(sel_rw=0, sel_sub=1, sel_ain=0, sel_bin=2)
         elif r_stage == stage_e.T5:
-            ctrl_signals = ctrl_t(o_rw=0, sel_st=1, en_p=0x82, sel_p=2, sel_main=0, sel_cin=1, sel_alu=0)
+            ctrl_signals = ctrl_t(sel_rw=0, sel_st=1, en_p=0x82, sel_p=2, sel_main=0, sel_cin=1, sel_alu=0)
         elif r_stage == stage_e.T0:
-            ctrl_signals = ctrl_t(o_rw=0, sel_st=2, sel_abh=4, sel_abl=4)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_st=2, sel_abh=4, sel_abl=4)
 
     # illegal opcodes
     elif r_ir == 0xEF:
@@ -406,28 +406,28 @@ def sub_decoder_11(r_ir, r_stage):
     # BEQ-RELATIVE
     elif r_ir == 0xF0:
         if r_stage == stage_e.T1:
-            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(sel_rw=1, en_ir=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T2:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=0xC, sel_main=1, sel_sub=2, sel_ain=2, sel_bin=2, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_st=0xC, sel_main=1, sel_sub=2, sel_ain=2, sel_bin=2, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T3:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=4, sel_main=6, sel_ain=2, sel_bin=3, sel_cin=0, sel_alu=0, sel_abl=2)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_st=4, sel_main=6, sel_ain=2, sel_bin=3, sel_cin=0, sel_alu=0, sel_abl=2)
         elif r_stage == stage_e.T0:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=2, sel_cin=3, sel_alu=0, sel_abh=2)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_st=2, sel_cin=3, sel_alu=0, sel_abh=2)
 
     # SBC-(IND),Y
     elif r_ir == 0xF1:
         if r_stage == stage_e.T1:
-            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, en_p=0x82, sel_p=2, sel_main=0, en_a=1, sel_cin=2, sel_alu=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(sel_rw=1, en_ir=1, en_p=0x82, sel_p=2, sel_main=0, en_a=1, sel_cin=2, sel_alu=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T2:
-            ctrl_signals = ctrl_t(o_rw=1, sel_sub=1, sel_ain=0, sel_bin=2, sel_abh=5, sel_abl=3, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_sub=1, sel_ain=0, sel_bin=2, sel_abh=5, sel_abl=3, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T3:
-            ctrl_signals = ctrl_t(o_rw=1, sel_main=3, sel_sub=1, sel_ain=2, sel_bin=2, sel_cin=1, sel_alu=0, sel_abh=5, sel_abl=2)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_main=3, sel_sub=1, sel_ain=2, sel_bin=2, sel_cin=1, sel_alu=0, sel_abh=5, sel_abl=2)
         elif r_stage == stage_e.T4:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=3, sel_sub=1, sel_ain=0, sel_bin=2, sel_cin=0, sel_alu=0, sel_abh=3, sel_abl=2)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_st=3, sel_sub=1, sel_ain=0, sel_bin=2, sel_cin=0, sel_alu=0, sel_abh=3, sel_abl=2)
         elif r_stage == stage_e.T5:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=1, sel_cin=1, sel_alu=0, sel_abh=2)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_st=1, sel_cin=1, sel_alu=0, sel_abh=2)
         elif r_stage == stage_e.T0:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=2, sel_main=4, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=4, sel_abl=4)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_st=2, sel_main=4, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=4, sel_abl=4)
 
     # illegal opcodes
     elif r_ir == 0xF2:
@@ -444,28 +444,28 @@ def sub_decoder_11(r_ir, r_stage):
     # SBC-ZPG,X
     elif r_ir == 0xF5:
         if r_stage == stage_e.T1:
-            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, en_p=0x82, sel_p=2, sel_main=0, en_a=1, sel_cin=2, sel_alu=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(sel_rw=1, en_ir=1, en_p=0x82, sel_p=2, sel_main=0, en_a=1, sel_cin=2, sel_alu=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T2:
-            ctrl_signals = ctrl_t(o_rw=1, sel_main=2, sel_sub=1, sel_ain=2, sel_bin=2, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_main=2, sel_sub=1, sel_ain=2, sel_bin=2, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T3:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=1, sel_cin=0, sel_alu=0, sel_abh=5, sel_abl=2)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_st=1, sel_cin=0, sel_alu=0, sel_abh=5, sel_abl=2)
         elif r_stage == stage_e.T0:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=2, sel_main=4, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=4, sel_abl=4)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_st=2, sel_main=4, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=4, sel_abl=4)
 
     # INC-ZPG,X
     elif r_ir == 0xF6:
         if r_stage == stage_e.T1:
-            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(sel_rw=1, en_ir=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T2:
-            ctrl_signals = ctrl_t(o_rw=1, sel_main=2, sel_sub=1, sel_ain=2, sel_bin=2, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_main=2, sel_sub=1, sel_ain=2, sel_bin=2, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T3:
-            ctrl_signals = ctrl_t(o_rw=1, sel_cin=0, sel_alu=0, sel_abh=5, sel_abl=2)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_cin=0, sel_alu=0, sel_abh=5, sel_abl=2)
         elif r_stage == stage_e.T4:
-            ctrl_signals = ctrl_t(o_rw=1, sel_sub=1, sel_ain=0, sel_bin=2)
+            ctrl_signals = ctrl_t(sel_rw=0, sel_sub=1, sel_ain=0, sel_bin=2)
         elif r_stage == stage_e.T5:
-            ctrl_signals = ctrl_t(o_rw=0, sel_st=1, en_p=0x82, sel_p=2, sel_main=0, sel_cin=1, sel_alu=0)
+            ctrl_signals = ctrl_t(sel_rw=0, sel_st=1, en_p=0x82, sel_p=2, sel_main=0, sel_cin=1, sel_alu=0)
         elif r_stage == stage_e.T0:
-            ctrl_signals = ctrl_t(o_rw=0, sel_st=2, sel_abh=4, sel_abl=4)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_st=2, sel_abh=4, sel_abl=4)
 
     # illegal opcodes
     elif r_ir == 0xF7:
@@ -474,22 +474,22 @@ def sub_decoder_11(r_ir, r_stage):
     # SED-IMPLIED
     elif r_ir == 0xF8:
         if r_stage == stage_e.T1:
-            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(sel_rw=1, en_ir=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T2:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=2, en_p=0x08, sel_p=1, sel_abh=4, sel_abl=4)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_st=2, en_p=0x08, sel_p=1, sel_abh=4, sel_abl=4)
 
     # SBC-ABS,Y
     elif r_ir == 0xF9:
         if r_stage == stage_e.T1:
-            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, en_p=0x82, sel_p=2, sel_main=0, en_a=1, sel_cin=2, sel_alu=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(sel_rw=1, en_ir=1, en_p=0x82, sel_p=2, sel_main=0, en_a=1, sel_cin=2, sel_alu=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T2:
-            ctrl_signals = ctrl_t(o_rw=1, sel_main=3, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_main=3, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T3:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=3, sel_sub=1, sel_ain=0, sel_bin=2, sel_cin=0, sel_alu=0, sel_abh=3, sel_abl=2)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_st=3, sel_sub=1, sel_ain=0, sel_bin=2, sel_cin=0, sel_alu=0, sel_abh=3, sel_abl=2)
         elif r_stage == stage_e.T4:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=1, sel_cin=1, sel_alu=0, sel_abh=2)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_st=1, sel_cin=1, sel_alu=0, sel_abh=2)
         elif r_stage == stage_e.T0:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=2, sel_main=4, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=4, sel_abl=4)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_st=2, sel_main=4, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=4, sel_abl=4)
 
     # illegal opcodes
     elif r_ir == 0xFA:
@@ -506,32 +506,32 @@ def sub_decoder_11(r_ir, r_stage):
     # SBC-ABS,X
     elif r_ir == 0xFD:
         if r_stage == stage_e.T1:
-            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, en_p=0x82, sel_p=2, sel_main=0, en_a=1, sel_cin=2, sel_alu=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(sel_rw=1, en_ir=1, en_p=0x82, sel_p=2, sel_main=0, en_a=1, sel_cin=2, sel_alu=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T2:
-            ctrl_signals = ctrl_t(o_rw=1, sel_main=2, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_main=2, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T3:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=3, sel_sub=1, sel_ain=0, sel_bin=2, sel_cin=0, sel_alu=0, sel_abh=3, sel_abl=2)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_st=3, sel_sub=1, sel_ain=0, sel_bin=2, sel_cin=0, sel_alu=0, sel_abh=3, sel_abl=2)
         elif r_stage == stage_e.T4:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=1, sel_cin=1, sel_alu=0, sel_abh=2)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_st=1, sel_cin=1, sel_alu=0, sel_abh=2)
         elif r_stage == stage_e.T0:
-            ctrl_signals = ctrl_t(o_rw=1, sel_st=2, sel_main=4, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=4, sel_abl=4)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_st=2, sel_main=4, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=4, sel_abl=4)
 
     # INC-ABS,X
     elif r_ir == 0xFE:
         if r_stage == stage_e.T1:
-            ctrl_signals = ctrl_t(o_rw=1, en_ir=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(sel_rw=1, en_ir=1, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T2:
-            ctrl_signals = ctrl_t(o_rw=1, sel_main=2, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_main=2, sel_sub=1, sel_ain=2, sel_bin=2, sel_abh=1, sel_abl=1, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T3:
-            ctrl_signals = ctrl_t(o_rw=1, sel_sub=1, sel_ain=0, sel_bin=2, sel_cin=0, sel_alu=0, sel_abh=3, sel_abl=2, sel_pch=1, sel_pcl=1)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_sub=1, sel_ain=0, sel_bin=2, sel_cin=0, sel_alu=0, sel_abh=3, sel_abl=2, sel_pch=1, sel_pcl=1)
         elif r_stage == stage_e.T4:
-            ctrl_signals = ctrl_t(o_rw=1, sel_cin=1, sel_alu=0, sel_abh=2)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_cin=1, sel_alu=0, sel_abh=2)
         elif r_stage == stage_e.T5:
-            ctrl_signals = ctrl_t(o_rw=1, sel_sub=1, sel_ain=0, sel_bin=2)
+            ctrl_signals = ctrl_t(sel_rw=0, sel_sub=1, sel_ain=0, sel_bin=2)
         elif r_stage == stage_e.T6:
-            ctrl_signals = ctrl_t(o_rw=0, sel_st=1, en_p=0x82, sel_p=2, sel_main=0, sel_cin=1, sel_alu=0)
+            ctrl_signals = ctrl_t(sel_rw=0, sel_st=1, en_p=0x82, sel_p=2, sel_main=0, sel_cin=1, sel_alu=0)
         elif r_stage == stage_e.T0:
-            ctrl_signals = ctrl_t(o_rw=0, sel_st=2, sel_abh=4, sel_abl=4)
+            ctrl_signals = ctrl_t(sel_rw=1, sel_st=2, sel_abh=4, sel_abl=4)
 
     # illegal opcodes
     elif r_ir == 0xFF:

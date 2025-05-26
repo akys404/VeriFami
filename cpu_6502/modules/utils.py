@@ -13,7 +13,7 @@ class stage_e(Enum):
 
 @dataclass
 class ctrl_t:
-    o_rw: int = 1
+    sel_rw: int = 1
     en_ir: int = 0
     sel_st: int = 0
     en_p: int = 0
